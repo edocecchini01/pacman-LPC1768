@@ -19,7 +19,8 @@
 #include "button_EXINT/button.h"
 #include "timer/timer.h"
 #include "RIT/RIT.h"
-#include "GLCD/GLCD.h" 
+#include "GLCD/GLCD.h"
+#include "draw_img/draw.h"
 
 
 #ifdef SIMULATOR
@@ -32,12 +33,14 @@ int main (void) {
   	
 	SystemInit();  												/* System Initialization (i.e., PLL)  */
   BUTTON_init();												/* BUTTON Initialization              */
-	init_RIT(0x004C4B40);								  /* RIT Initialization 50 msec       	*/
-	enable_RIT();
+	//init_RIT(0x004C4B40);								  /* RIT Initialization 50 msec       	*/
+	//enable_RIT();
 	
 	LCD_Initialization();
 	
 	LCD_Clear(Black);
+	
+	draw_tail2(100,53);
 	
 	//init_timer(2,0,0x00014585);						/* TIMER2, MR0, 1/300s, 300Hz, Ton    */
 	
