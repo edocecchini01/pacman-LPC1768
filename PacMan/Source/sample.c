@@ -50,6 +50,7 @@ int main(void)
 	LCD_Clear(Black);
 	
 	draw_backgoround();
+	//draw_tail_1(233,0);
 	//GUI_Text(0, 280, (uint8_t *) " touch here : 1 sec to clear  ", Red, White);
 	
 	
