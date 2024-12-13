@@ -36,8 +36,8 @@ extern uint8_t ScaleFlag; // <- ScaleFlag needs to visible in order for the emul
 #endif
 
 game_state gs = {
-		.posPac_X = 0,
-		.posPac_Y = 0
+		.posPac_X = 112,
+		.posPac_Y = 154
 };
 
 int main(void)
@@ -52,7 +52,8 @@ int main(void)
 	
 	LCD_Clear(Black);
 	
-	draw_backgoround();
+	draw_backgoround(0, 4);
+	draw_pacMan(gs.posPac_X, gs.posPac_Y, Yellow);
 	//draw_tail_1(233,0);
 	//GUI_Text(0, 280, (uint8_t *) " touch here : 1 sec to clear  ", Red, White);
 	
