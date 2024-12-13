@@ -8,6 +8,23 @@
 
 extern game_state gs;
 
+void count_down()
+{
+	uint32_t count = 1 * 25000000; //1 secondo
+	init_timer(1, 0, count);
+	enable_timer(1);
+}
+
+void init_UI()
+{
+	GUI_Text(8, 7, (uint8_t *) "GAME OVER:", White, Black);
+	GUI_Text(96, 7, (uint8_t *) "60", White, Black);
+	GUI_Text(140, 7, (uint8_t *) "SCORE:", White, Black);
+	GUI_Text(196, 7, (uint8_t *) "00", White, Black);
+	
+	count_down();
+}
+
 void draw_backgoround(uint32_t off_X, uint32_t off_Y)
 {
 	int i = 0, j = 0;

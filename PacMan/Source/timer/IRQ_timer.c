@@ -12,7 +12,10 @@
 #include "timer.h"
 #include "../GLCD/GLCD.h" 
 #include "../TouchPanel/TouchPanel.h"
+#include "game_logic/gameL.h"
 #include <stdio.h> /*for sprintf*/
+
+extern game_state gs;
 
 /******************************************************************************
 ** Function name:		Timer0_IRQHandler
@@ -44,7 +47,10 @@ void TIMER0_IRQHandler (void)
 ******************************************************************************/
 void TIMER1_IRQHandler (void)
 {
-	// your code here
+	gs.countDown = gs.countDown - 1;
+	char str[2];
+	sprintf(str, "%d", gs.countDown);
+	GUI_Text(96, 7, (uint8_t *) str, White, Black);
 	
 	LPC_TIM1->IR |= 1;
   return;
