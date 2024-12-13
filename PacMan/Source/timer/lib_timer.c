@@ -181,7 +181,7 @@ uint32_t init_timer ( uint8_t timer_num, uint8_t match_register ,uint32_t TimerI
 //	 <i> 1 Stop on MR3: the TC and PC will be stopped and TCR[3] will be set to 0 if MR3 matches the TC
 //	 <i> 0 Feature disabled.
 //   </e>
-	LPC_TIM0->MCR = 3;
+	LPC_TIM0->MCR = 6;
 // </h>
 // <<< end of configuration section >>>
 

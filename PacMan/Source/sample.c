@@ -27,7 +27,6 @@
 #include "TouchPanel/TouchPanel.h"
 #include "timer/timer.h"
 #include "RIT/RIT.h"
-#include "joystick/joystick.h"
 #include "draw_img/draw.h"
 #include "game_logic/gameL.h"
 
@@ -36,6 +35,10 @@
 extern uint8_t ScaleFlag; // <- ScaleFlag needs to visible in order for the emulator to find the symbol (can be placed also inside system_LPC17xx.h but since it is RO, it needs more work)
 #endif
 
+game_state gs = {
+		.posPac_X = 0,
+		.posPac_Y = 0
+};
 
 int main(void)
 {

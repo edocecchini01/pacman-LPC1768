@@ -4,6 +4,8 @@
 #define ROW 45
 #define COLUMN 30
 
+extern game_state gs;
+
 void draw_backgoround()
 {
 	int i = 0, j = 0;
@@ -70,4 +72,34 @@ void draw_backgoround()
 		}
 	}
 	
+}
+
+void move_pacMan(game_state gs, uint32_t dX, uint32_t dY)
+{
+	draw_pacMan(gs.posPac_X, gs.posPac_Y, Black); //cancella pacman
+	draw_pacMan(gs.posPac_X + dX,gs.posPac_Y + dY, Yellow); //lo ricrea nella nuova pos.
+}
+
+void direct_pacMan(Position direction)
+{
+	switch(direction){
+		case LEFT:
+			move_pacMan(gs, -7, 0);
+			gs.posPac_X = gs.posPac_X + -7;
+			break;
+		case RIGHT:
+			move_pacMan(gs, 7, 0);
+			gs.posPac_X = gs.posPac_X + 7;
+			break;
+		case UP:
+			move_pacMan(gs, 0, -7);
+			gs.posPac_Y = gs.posPac_Y + -7;
+			break;
+		case DOWN:
+			move_pacMan(gs, 0, 7);
+			gs.posPac_Y = gs.posPac_Y + 7;
+			break;
+		default:
+			break;
+	}
 }

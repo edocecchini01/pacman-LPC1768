@@ -730,6 +730,21 @@
           </Files>
         </Group>
         <Group>
+          <GroupName>utils</GroupName>
+          <Files>
+            <File>
+              <FileName>funct_utils.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\Source\utils\funct_utils.c</FilePath>
+            </File>
+            <File>
+              <FileName>utils.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\Source\utils\utils.h</FilePath>
+            </File>
+          </Files>
+        </Group>
+        <Group>
           <GroupName>::CMSIS</GroupName>
         </Group>
       </Groups>
@@ -1403,6 +1418,21 @@
               <FileName>gameL.h</FileName>
               <FileType>5</FileType>
               <FilePath>.\Source\game_logic\gameL.h</FilePath>
+            </File>
+          </Files>
+        </Group>
+        <Group>
+          <GroupName>utils</GroupName>
+          <Files>
+            <File>
+              <FileName>funct_utils.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\Source\utils\funct_utils.c</FilePath>
+            </File>
+            <File>
+              <FileName>utils.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\Source\utils\utils.h</FilePath>
             </File>
           </Files>
         </Group>

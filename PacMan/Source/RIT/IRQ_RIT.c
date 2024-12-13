@@ -10,6 +10,8 @@
 #include "LPC17xx.h"
 #include "RIT.h"
 #include "../led/led.h"
+#include "game_logic/gameL.h"
+#include "utils/utils.h"
 
 /******************************************************************************
 ** Function name:		RIT_IRQHandler
@@ -27,12 +29,13 @@ volatile int down_2 = 0;
 void RIT_IRQHandler (void)
 {			
 /* Static as its value persists between calls to the function. It is not reinitialized each time the function is executed.*/
-static uint8_t position=0;
 static int joystic_up=0;
 static int joystic_down=0;
 static int joystic_left=0;
 static int joystic_right=0;
 static int joystic_sel=0;
+	
+static Position act_pos = STOP;
 	
 // BUTTON AREA
 
@@ -103,14 +106,10 @@ if(down_2 !=0){
 		joystic_up++;
 		switch(joystic_up){
 			case 1:
-				LED_Off(position);
-				LED_On(0);
-				position = 0;
+				act_pos = UP;
 				break;
 			case 60:	//3sec = 3000ms/50ms = 60
-				LED_Off(position);
-				LED_On(7);
-				position = 7;
+
 				break;
 			default:
 				break;
@@ -126,14 +125,10 @@ if(down_2 !=0){
 		joystic_down++;
 		switch(joystic_down){
 			case 1:
-				LED_Off(position);
-				LED_On(0);
-				position = 0;
+				act_pos = DOWN;
 				break;
 			case 60:	//3sec = 3000ms/50ms = 60
-				LED_Off(position);
-				LED_On(7);
-				position = 7;
+
 				break;
 			default:
 				break;
@@ -149,14 +144,10 @@ if(down_2 !=0){
 		joystic_left++;
 		switch(joystic_left){
 			case 1:
-				LED_Off(position);
-				LED_On(0);
-				position = 0;
+				act_pos = LEFT;
 				break;
 			case 60:	//3sec = 3000ms/50ms = 60
-				LED_Off(position);
-				LED_On(7);
-				position = 7;
+
 				break;
 			default:
 				break;
@@ -172,14 +163,10 @@ if(down_2 !=0){
 		joystic_right++;
 		switch(joystic_right){
 			case 1:
-				LED_Off(position);
-				LED_On(0);
-				position = 0;
+			act_pos = RIGHT;
 				break;
 			case 60:	//3sec = 3000ms/50ms = 60
-				LED_Off(position);
-				LED_On(7);
-				position = 7;
+
 				break;
 			default:
 				break;
@@ -195,14 +182,10 @@ if(down_2 !=0){
 		joystic_sel++;
 		switch(joystic_sel){
 			case 1:
-				LED_Off(position);
-				LED_On(0);
-				position = 0;
+
 				break;
 			case 60:	//3sec = 3000ms/50ms = 60
-				LED_Off(position);
-				LED_On(7);
-				position = 7;
+
 				break;
 			default:
 				break;
@@ -210,6 +193,12 @@ if(down_2 !=0){
 	}
 	else{
 			joystic_sel=0;
+	}
+	
+	if(act_pos != STOP)
+	{
+		direct_pacMan(act_pos);
+		wait_milli(900);
 	}
 	
 	reset_RIT();
