@@ -3,7 +3,7 @@
 
 void wait_milli(uint32_t time)
 {
-	uint32_t count = (time/1000) * 25000000;
+	uint32_t count = (time * 25000000)/1000;
 	init_timer(0, 0, count);
 	enable_timer(0);
 	
