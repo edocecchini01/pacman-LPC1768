@@ -7,9 +7,12 @@
 ** Correlated files:    timer.h
 **--------------------------------------------------------------------------------------------------------
 *********************************************************************************************************/
+#include <string.h>
 #include "LPC17xx.h"
 #include "timer.h"
-#include "../led/led.h"
+#include "../GLCD/GLCD.h" 
+#include "../TouchPanel/TouchPanel.h"
+#include <stdio.h> /*for sprintf*/
 
 /******************************************************************************
 ** Function name:		Timer0_IRQHandler
@@ -20,13 +23,41 @@
 ** Returned value:		None
 **
 ******************************************************************************/
-extern unsigned char led_value;					/* defined in funct_led								*/
 
 void TIMER0_IRQHandler (void)
 {
-	// your code here
+	static int clear = 0;
+	char time_in_char[5] = "";
+	int mosse[6][2]={{1,1},{-1,-1},{1,0},{-1,0},{0,1},{0,-1}};
+	int i=0;
 	
-  LPC_TIM0->IR |= 1;			/* clear interrupt flag */
+  if(getDisplayPoint(&display, Read_Ads7846(), &matrix )){
+		if(display.y < 280){
+			for(i=0;i<6;i++)
+				TP_DrawPoint(display.x+mosse[i][0],display.y+mosse[i][1]);
+			TP_DrawPoint(display.x,display.y);
+			GUI_Text(200, 0, (uint8_t *) "     ", Blue, Blue);
+			clear = 0;
+		}
+		else{			
+			if(display.y <= 0x13E){			
+				clear++;
+				if(clear%20 == 0){
+					sprintf(time_in_char,"%4d",clear/20);
+					GUI_Text(200, 0, (uint8_t *) time_in_char, White, Blue);
+					if(clear == 200){	/* 1 seconds = 200 times * 500 us*/
+						LCD_Clear(Black);
+						GUI_Text(0, 280, (uint8_t *) " touch here : 1 sec to clear ", Blue, White);			
+						clear = 0;
+					}
+				}
+			}
+		}
+	}
+	else{
+		//do nothing if touch returns values out of bounds
+	}
+  LPC_TIM0->IR = 1;			/* clear interrupt flag */
   return;
 }
 
@@ -40,13 +71,11 @@ void TIMER0_IRQHandler (void)
 ** Returned value:		None
 **
 ******************************************************************************/
-
-
 void TIMER1_IRQHandler (void)
 {
 	// your code here
 	
-	LPC_TIM1->IR |= 1;			/* clear interrupt flag */
+	LPC_TIM1->IR |= 1;
   return;
 }
 
@@ -65,7 +94,6 @@ void TIMER3_IRQHandler (void)
 	LPC_TIM3->IR |= 1;
   return;
 }
-
 
 /******************************************************************************
 **                            End Of File

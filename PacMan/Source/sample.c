@@ -1,58 +1,70 @@
-/*----------------------------------------------------------------------------
- * Name:    sample.c
- * Purpose: 
- *		to control led11 and led 10 through EINT buttons (similarly to project 03_)
- *		to control leds9 to led4 by the timer handler (1 second - circular cycling)
- * Note(s): this version supports the LANDTIGER Emulator
- * Author: 	Paolo BERNARDI - PoliTO - last modified 15/12/2020
- *----------------------------------------------------------------------------
- *
- * This software is supplied "AS IS" without warranties of any kind.
- *
- * Copyright (c) 2017 Politecnico di Torino. All rights reserved.
- *----------------------------------------------------------------------------*/
+/****************************************Copyright (c)****************************************************
+**                                      
+**                                 http://www.powermcu.com
+**
+**--------------File Info---------------------------------------------------------------------------------
+** File name:               main.c
+** Descriptions:            The GLCD application function
+**
+**--------------------------------------------------------------------------------------------------------
+** Created by:              AVRman
+** Created date:            2010-11-7
+** Version:                 v1.0
+** Descriptions:            The original version
+**
+**--------------------------------------------------------------------------------------------------------
+** Modified by:             Paolo Bernardi
+** Modified date:           03/01/2020
+** Version:                 v2.0
+** Descriptions:            basic program for LCD and Touch Panel teaching
+**
+*********************************************************************************************************/
 
-                  
-#include <stdio.h>
-#include "LPC17xx.h"                    /* LPC17xx definitions                */
-#include "led/led.h"
+/* Includes ------------------------------------------------------------------*/
+#include "LPC17xx.h"
 #include "button_EXINT/button.h"
+#include "GLCD/GLCD.h" 
+#include "TouchPanel/TouchPanel.h"
 #include "timer/timer.h"
 #include "RIT/RIT.h"
-#include "GLCD/GLCD.h"
+#include "joystick/joystick.h"
 #include "draw_img/draw.h"
 
 
 #ifdef SIMULATOR
 extern uint8_t ScaleFlag; // <- ScaleFlag needs to visible in order for the emulator to find the symbol (can be placed also inside system_LPC17xx.h but since it is RO, it needs more work)
 #endif
-/*----------------------------------------------------------------------------
-  Main Program
- *----------------------------------------------------------------------------*/
-int main (void) {
-  	
-	SystemInit();  												/* System Initialization (i.e., PLL)  */
+
+
+int main(void)
+{
+  SystemInit();  												/* System Initialization (i.e., PLL)  */
   BUTTON_init();												/* BUTTON Initialization              */
-	//init_RIT(0x004C4B40);								  /* RIT Initialization 50 msec       	*/
-	//enable_RIT();
+	joystick_init();											/* Joystick Initialization            */
+	init_RIT(0x004C4B40);								  /* RIT Initialization 50 msec       	*/
+	enable_RIT();
 	
-	LCD_Initialization();
+  LCD_Initialization();
 	
 	LCD_Clear(Black);
-	
-	draw_tail2(100,53);
-	
-	//init_timer(2,0,0x00014585);						/* TIMER2, MR0, 1/300s, 300Hz, Ton    */
-	
+	//GUI_Text(0, 280, (uint8_t *) " touch here : 1 sec to clear  ", Red, White);
+	//LCD_DrawLine(0, 0, 200, 200, White);
+	//init_timer(0, 0x1312D0 ); 						/* 50ms * 25MHz = 1.25*10^6 = 0x1312D0 */
+	//init_timer(0, 0x6108 ); 						  /* 1ms * 25MHz = 25*10^3 = 0x6108 */
+	//init_timer(0, 0x4E2 ); 						    /* 500us * 25MHz = 1.25*10^3 = 0x4E2 */
 	init_timer(0, 0, 0xC8); 						    /* 8us * 25MHz = 200 ~= 0xC8 */
+	
 	enable_timer(0);
-
 	
 	LPC_SC->PCON |= 0x1;									/* power-down	mode										*/
-	LPC_SC->PCON &= 0xFFFFFFFFD;
-		
-  while (1) {                           /* Loop forever                       */	
+	LPC_SC->PCON &= ~(0x2);						
+	
+  while (1)	
+  {
 		__ASM("wfi");
   }
-
 }
+
+/*********************************************************************************************************
+      END FILE
+*********************************************************************************************************/
