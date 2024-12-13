@@ -29,6 +29,7 @@
 #include "RIT/RIT.h"
 #include "joystick/joystick.h"
 #include "draw_img/draw.h"
+#include "game_logic/gameL.h"
 
 
 #ifdef SIMULATOR
@@ -48,7 +49,7 @@ int main(void)
 	
 	LCD_Clear(Black);
 	
-	draw_tail1(30, 55);
+	draw_backgoround();
 	//GUI_Text(0, 280, (uint8_t *) " touch here : 1 sec to clear  ", Red, White);
 	
 	

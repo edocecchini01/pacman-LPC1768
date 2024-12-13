@@ -715,6 +715,21 @@
           </Files>
         </Group>
         <Group>
+          <GroupName>game_logic</GroupName>
+          <Files>
+            <File>
+              <FileName>funct_gameL.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\Source\game_logic\funct_gameL.c</FilePath>
+            </File>
+            <File>
+              <FileName>gameL.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\Source\game_logic\gameL.h</FilePath>
+            </File>
+          </Files>
+        </Group>
+        <Group>
           <GroupName>::CMSIS</GroupName>
         </Group>
       </Groups>
@@ -1373,6 +1388,21 @@
               <FileName>funct_draw.c</FileName>
               <FileType>1</FileType>
               <FilePath>.\Source\draw_img\funct_draw.c</FilePath>
+            </File>
+          </Files>
+        </Group>
+        <Group>
+          <GroupName>game_logic</GroupName>
+          <Files>
+            <File>
+              <FileName>funct_gameL.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\Source\game_logic\funct_gameL.c</FilePath>
+            </File>
+            <File>
+              <FileName>gameL.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\Source\game_logic\gameL.h</FilePath>
             </File>
           </Files>
         </Group>
