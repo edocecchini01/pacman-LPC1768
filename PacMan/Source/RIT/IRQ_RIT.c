@@ -198,7 +198,7 @@ if(down_2 !=0){
 	if(act_pos != STOP)
 	{
 		direct_pacMan(act_pos);
-		wait_milli(80);
+		//wait_milli(80);
 	}
 	
 	reset_RIT();
