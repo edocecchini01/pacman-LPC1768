@@ -45,10 +45,12 @@ void TIMER0_IRQHandler (void)
 ** Returned value:		None
 **
 ******************************************************************************/
+
+char str[2];
+
 void TIMER1_IRQHandler (void)
 {
 	gs.countDown = gs.countDown - 1;
-	char str[2];
 	sprintf(str, "%d", gs.countDown);
 	GUI_Text(96, 7, (uint8_t *) str, White, Black);
 	

@@ -14,7 +14,7 @@ typedef enum {
     RIGHT = 2,
     UP = 3,
     DOWN = 4
-} Position;
+} Direction;
 
 /* lib_joystick */
 void joystick_init(void);

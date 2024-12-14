@@ -11,7 +11,6 @@
 #include "RIT.h"
 #include "../led/led.h"
 #include "game_logic/gameL.h"
-#include "utils/utils.h"
 
 /******************************************************************************
 ** Function name:		RIT_IRQHandler
@@ -26,6 +25,8 @@ volatile int down_0 = 0;
 volatile int down_1 = 0;
 volatile int down_2 = 0;
 
+extern game_state gs;
+
 void RIT_IRQHandler (void)
 {			
 /* Static as its value persists between calls to the function. It is not reinitialized each time the function is executed.*/
@@ -34,8 +35,6 @@ static int joystic_down=0;
 static int joystic_left=0;
 static int joystic_right=0;
 static int joystic_sel=0;
-	
-static Position act_pos = STOP;
 	
 // BUTTON AREA
 
@@ -106,7 +105,7 @@ if(down_2 !=0){
 		joystic_up++;
 		switch(joystic_up){
 			case 1:
-				act_pos = UP;
+				gs.actPos = UP;
 				break;
 			case 60:	//3sec = 3000ms/50ms = 60
 
@@ -125,7 +124,7 @@ if(down_2 !=0){
 		joystic_down++;
 		switch(joystic_down){
 			case 1:
-				act_pos = DOWN;
+				gs.actPos = DOWN;
 				break;
 			case 60:	//3sec = 3000ms/50ms = 60
 
@@ -144,7 +143,7 @@ if(down_2 !=0){
 		joystic_left++;
 		switch(joystic_left){
 			case 1:
-				act_pos = LEFT;
+				gs.actPos = LEFT;
 				break;
 			case 60:	//3sec = 3000ms/50ms = 60
 
@@ -163,7 +162,7 @@ if(down_2 !=0){
 		joystic_right++;
 		switch(joystic_right){
 			case 1:
-			act_pos = RIGHT;
+			gs.actPos = RIGHT;
 				break;
 			case 60:	//3sec = 3000ms/50ms = 60
 
@@ -193,12 +192,6 @@ if(down_2 !=0){
 	}
 	else{
 			joystic_sel=0;
-	}
-	
-	if(act_pos != STOP)
-	{
-		direct_pacMan(act_pos);
-		//wait_milli(80);
 	}
 	
 	reset_RIT();

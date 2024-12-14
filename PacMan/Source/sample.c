@@ -29,6 +29,7 @@
 #include "RIT/RIT.h"
 #include "draw_img/draw.h"
 #include "game_logic/gameL.h"
+#include "utils/utils.h"
 
 
 #ifdef SIMULATOR
@@ -38,7 +39,8 @@ extern uint8_t ScaleFlag; // <- ScaleFlag needs to visible in order for the emul
 game_state gs = {
 		.posPac_X = 112,
 		.posPac_Y = 154,
-		.countDown = 60
+		.countDown = 60,
+		.actPos = STOP
 };
 
 int main(void)
@@ -62,6 +64,11 @@ int main(void)
 	
   while (1)	
   {
+		if(gs.actPos != STOP)
+		{
+			direct_pacMan(gs.actPos);
+			//wait_milli(300);
+		}
 		__ASM("wfi");
   }
 }
