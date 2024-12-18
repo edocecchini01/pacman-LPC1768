@@ -29,7 +29,10 @@ extern game_state gs;
 
 void TIMER0_IRQHandler (void)
 {
-	// your code here
+	if(gs.actDir != STOP)
+		{
+			direct_pacMan(gs.actDir);
+		}
 	
   LPC_TIM0->IR = 1;			/* clear interrupt flag */
   return;

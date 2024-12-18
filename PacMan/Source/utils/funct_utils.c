@@ -1,6 +1,7 @@
 #include "utils.h"
 #include "timer.h"
 
+/*
 void wait_milli(uint32_t time)
 {
 	uint32_t count = (time * 25000000)/1000;
@@ -13,3 +14,4 @@ void wait_milli(uint32_t time)
 	
 	disable_timer(0);
 }
+*/

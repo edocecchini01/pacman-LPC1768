@@ -2,21 +2,21 @@
 #include "joystick/joystick.h"
 
 typedef struct {
-    uint32_t posPac_X;
-		uint32_t posPac_Y;
+    uint32_t posPac_Row;	//y
+		uint32_t posPac_Col;	//x
 		uint32_t countDown;
-		Direction actPos;
+		Direction actDir;
 } game_state;
 
 void draw_backgoround(uint32_t off_X, uint32_t off_Y);
 
-void draw_objMat(uint32_t off_X, uint32_t off_Y);
-
 void count_down();
 
-void init_UI();
+void tim_PacMan(uint32_t speed);
 
-void move_pacMan(game_state gs, uint32_t dX, uint32_t dY);
+void game_init();
+
+void move_pacMan(game_state gs, uint32_t newCol, uint32_t newRow);
 
 void direct_pacMan(Direction direction);
 

@@ -105,7 +105,7 @@ if(down_2 !=0){
 		joystic_up++;
 		switch(joystic_up){
 			case 1:
-				gs.actPos = UP;
+				gs.actDir = UP;
 				break;
 			case 60:	//3sec = 3000ms/50ms = 60
 
@@ -124,7 +124,7 @@ if(down_2 !=0){
 		joystic_down++;
 		switch(joystic_down){
 			case 1:
-				gs.actPos = DOWN;
+				gs.actDir = DOWN;
 				break;
 			case 60:	//3sec = 3000ms/50ms = 60
 
@@ -143,7 +143,7 @@ if(down_2 !=0){
 		joystic_left++;
 		switch(joystic_left){
 			case 1:
-				gs.actPos = LEFT;
+				gs.actDir = LEFT;
 				break;
 			case 60:	//3sec = 3000ms/50ms = 60
 
@@ -162,7 +162,7 @@ if(down_2 !=0){
 		joystic_right++;
 		switch(joystic_right){
 			case 1:
-			gs.actPos = RIGHT;
+			gs.actDir = RIGHT;
 				break;
 			case 60:	//3sec = 3000ms/50ms = 60
 

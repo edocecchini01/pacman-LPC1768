@@ -181,13 +181,13 @@ uint32_t init_timer ( uint8_t timer_num, uint8_t match_register ,uint32_t TimerI
 //	 <i> 1 Stop on MR3: the TC and PC will be stopped and TCR[3] will be set to 0 if MR3 matches the TC
 //	 <i> 0 Feature disabled.
 //   </e>
-	LPC_TIM0->MCR = 6;
+	LPC_TIM0->MCR = 3;
 // </h>
 // <<< end of configuration section >>>
 
 	NVIC_EnableIRQ(TIMER0_IRQn);
 	/*NVIC_SetPriority(TIMER0_IRQn, 4);*/		/* less priority than buttons */
-	NVIC_SetPriority(TIMER0_IRQn, 0);		/* more priority than buttons */
+	NVIC_SetPriority(TIMER0_IRQn, 2);		/* more priority than buttons */
 	return (1);
   }
   else if ( timer_num == 1 )
@@ -232,7 +232,7 @@ uint32_t init_timer ( uint8_t timer_num, uint8_t match_register ,uint32_t TimerI
 	LPC_TIM2->MCR = 3;			
 
 	NVIC_EnableIRQ(TIMER2_IRQn);
-	NVIC_SetPriority(TIMER2_IRQn, 5);	/* less priority than buttons and timer0*/
+	NVIC_SetPriority(TIMER2_IRQn, 3);	/* less priority than buttons and timer0*/
 	return (1);
   }
 	else if ( timer_num == 3 )

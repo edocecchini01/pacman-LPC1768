@@ -70,6 +70,7 @@
 #define Green          0x07E0
 #define Cyan           0x7FFF
 #define Yellow         0xFFE0
+#define SalmonPink		 0xFF79
 
 /******************************************************************************
 * Function Name  : RGB565CONVERT

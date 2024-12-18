@@ -37,10 +37,10 @@ extern uint8_t ScaleFlag; // <- ScaleFlag needs to visible in order for the emul
 #endif
 
 game_state gs = {
-		.posPac_X = 112,
-		.posPac_Y = 154,
+		.posPac_Row = 0,
+		.posPac_Col = 0,
 		.countDown = 60,
-		.actPos = STOP
+		.actDir = STOP
 };
 
 int main(void)
@@ -55,20 +55,15 @@ int main(void)
 	
 	LCD_Clear(Black);
 	
-	draw_backgoround(0, 4);
-	init_UI();
-	draw_pacMan(gs.posPac_X, gs.posPac_Y, Yellow);
+	draw_backgoround(8, 32);
+	
+	game_init();
 	
 	LPC_SC->PCON |= 0x1;									/* power-down	mode										*/
 	LPC_SC->PCON &= ~(0x2);						
 	
   while (1)	
   {
-		if(gs.actPos != STOP)
-		{
-			direct_pacMan(gs.actPos);
-			//wait_milli(300);
-		}
 		__ASM("wfi");
   }
 }
