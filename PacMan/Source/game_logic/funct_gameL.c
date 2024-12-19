@@ -52,7 +52,7 @@ uint8_t obj_matrix[ROWS][COLUMNS] = {
 */
 
 
-uint8_t back_matrix[ROWS][COLUMNS] = {
+const uint8_t back_matrix[ROWS][COLUMNS] = {
 	
 	  {1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1},
     {1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1},
@@ -89,6 +89,7 @@ uint8_t back_matrix[ROWS][COLUMNS] = {
 	};
 
 extern game_state gs;
+extern mapOff[];
 
 void count_down()
 {
@@ -99,9 +100,10 @@ void count_down()
 
 void tim_PacMan(uint32_t speed) //in milliseconds
 {
-	uint32_t count = (speed * 25000000)/1000;
+	uint64_t temp = speed * 25000000;
+	uint32_t count = temp/1000;
 	init_timer(0, 0, count);
-	enable_timer(0);
+	//enable_timer(0);
 }
 
 void game_init()
@@ -152,30 +154,40 @@ void draw_backgoround(uint32_t off_X, uint32_t off_Y)
 	
 }
 
-void move_pacMan(game_state gs, uint32_t movCol, uint32_t movRow)
+void move_pacMan(int movRow, int movCol)
 {
-	if(obj_matrix[gs.posPac_Row + movRow][gs.posPac_Col + movCol] == 2) //incontra un muro
-	{
+	int newPosRow = gs.posPac_Row + movRow;
+  int newPosCol = gs.posPac_Col + movCol;
+	
+	if(obj_matrix[newPosRow][newPosCol] == 2)  // la nuova posizione è un muro
+  {
 		gs.actDir = STOP;
-	}
+  }
 	else
 	{
-		draw_obj((gs.posPac_Col * 8), (gs.posPac_Row * 8), 0); //cancella pacman
-		obj_matrix[gs.posPac_Row][gs.posPac_Col] = 0; //modifica il valore nella matrice degli oggetti
-		
-		if(movCol == 0) //movimento lungo le righe Y
+		if(obj_matrix[newPosRow][newPosCol] == 3) //standard pill
 		{
-			draw_obj(gs.posPac_Col * 8, (gs.posPac_Row * 8) + (movRow*8), 1); //lo ricrea nella nuova pos.
-			
-			gs.posPac_Row = gs.posPac_Row + movRow;
+			add_score(10);
 		}
-		else //movimento lungo le colonne X
+		else if(obj_matrix[newPosRow][newPosCol] == 4) //power pill
 		{
-			draw_obj((gs.posPac_Col * 8) + (movCol*8), (gs.posPac_Row * 8), 1); //lo ricrea nella nuova pos.
-			
-			gs.posPac_Col = gs.posPac_Col + movCol;
+			add_score(50);
 		}
 		
+		draw_obj((gs.posPac_Col * 8)+ mapOff[0], (gs.posPac_Row * 8)+ mapOff[1], 0);  // Cancella nella vecchia posizione
+    obj_matrix[gs.posPac_Row][gs.posPac_Col] = 0;
+		
+		if(movCol == 0)  // Movimento lungo le righe (Y)
+    {
+			draw_obj((gs.posPac_Col * 8) + mapOff[0], (newPosRow * 8) + mapOff[1], 1);  // Crea pacman nella nuova posizione
+    }
+    else  // Movimento lungo le colonne (X)
+    {
+			draw_obj((newPosCol * 8) + mapOff[0], (gs.posPac_Row * 8) + mapOff[1], 1);  // Crea pacman nella nuova posizione
+    }
+		
+		gs.posPac_Row = newPosRow;
+		gs.posPac_Col = newPosCol;
 		obj_matrix[gs.posPac_Row][gs.posPac_Col] = 1;
 		
 	}
@@ -186,20 +198,27 @@ void direct_pacMan(Direction direction)
 {
 	switch(direction){
 		case LEFT:
-			move_pacMan(gs, 0, -1);
+			move_pacMan(0, -1);
 			break;
 		case RIGHT:
-			move_pacMan(gs, 0, +1);
+			move_pacMan(0, 1);
 			break;
 		case UP:
-			move_pacMan(gs, -1, 0);
+			move_pacMan(-1, 0);
 			break;
 		case DOWN:
-			move_pacMan(gs, 1, 0);
+			move_pacMan(1, 0);
 			break;
 		default:
 			break;
 	}
+}
+
+void add_score(uint32_t points)
+{
+	gs.score += points;
+	uint32_t actPoints = gs.score;
+	refresh_points(actPoints);
 }
 
 void mod_objMat(uint32_t i, uint32_t j, uint32_t new_obj)

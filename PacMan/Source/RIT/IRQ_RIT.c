@@ -11,6 +11,7 @@
 #include "RIT.h"
 #include "../led/led.h"
 #include "game_logic/gameL.h"
+#include "timer/timer.h"
 
 /******************************************************************************
 ** Function name:		RIT_IRQHandler
@@ -192,6 +193,11 @@ if(down_2 !=0){
 	}
 	else{
 			joystic_sel=0;
+	}
+	
+	if(gs.actDir != STOP)
+	{
+		enable_timer(0);
 	}
 	
 	reset_RIT();

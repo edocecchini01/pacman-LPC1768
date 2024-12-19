@@ -36,10 +36,13 @@
 extern uint8_t ScaleFlag; // <- ScaleFlag needs to visible in order for the emulator to find the symbol (can be placed also inside system_LPC17xx.h but since it is RO, it needs more work)
 #endif
 
-game_state gs = {
+const mapOff[2] = {8,32}; //offset x,y
+
+volatile game_state gs = {
 		.posPac_Row = 0,
 		.posPac_Col = 0,
 		.countDown = 60,
+		.score = 0,
 		.actDir = STOP
 };
 
@@ -55,7 +58,7 @@ int main(void)
 	
 	LCD_Clear(Black);
 	
-	draw_backgoround(8, 32);
+	draw_backgoround(mapOff[0], mapOff[1]);
 	
 	game_init();
 	

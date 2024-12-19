@@ -1,8 +1,10 @@
 #include "draw.h"
+#include "game_logic/gameL.h"
 
 //LCD_SetPoint(uint16_t Xpos,uint16_t Ypos,uint16_t point);
 //LCD_DrawLine( uint16_t x0, uint16_t y0, uint16_t x1, uint16_t y1 , uint16_t color );
 
+extern game_state gs;
 
 void draw_tail_1(uint16_t x0, uint16_t y0)
 {
@@ -80,4 +82,19 @@ void draw_pacMan(uint16_t x0, uint16_t y0, uint16_t color)
 		LCD_DrawLine(x0+2, y0+11, x0+11,y0+11,color);
 		LCD_DrawLine(x0+4, y0+12, x0+9, y0+12,color);		
 		LCD_SetPoint(x0, y0, Green);
+}
+
+
+void refresh_timer(uint32_t time)
+{
+	char str[2];
+	sprintf(str, "%d", time);
+	GUI_Text(96, 7, (uint8_t *) str, White, Black);
+}
+
+void refresh_points(uint32_t points)
+{
+	char str[5];
+	sprintf(str, "%d", points);
+	GUI_Text(196, 7, (uint8_t *) str, White, Black);
 }

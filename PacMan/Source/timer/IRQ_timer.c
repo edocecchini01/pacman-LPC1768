@@ -31,9 +31,15 @@ void TIMER0_IRQHandler (void)
 {
 	if(gs.actDir != STOP)
 		{
-			direct_pacMan(gs.actDir);
-		}
+			Direction currentDir = gs.actDir;
+			direct_pacMan(currentDir);
+    }
+	else
+	{
+		disable_timer(0);
+	}
 	
+	reset_RIT();
   LPC_TIM0->IR = 1;			/* clear interrupt flag */
   return;
 }
@@ -49,13 +55,12 @@ void TIMER0_IRQHandler (void)
 **
 ******************************************************************************/
 
-char str[2];
 
 void TIMER1_IRQHandler (void)
 {
 	gs.countDown = gs.countDown - 1;
-	sprintf(str, "%d", gs.countDown);
-	GUI_Text(96, 7, (uint8_t *) str, White, Black);
+	uint32_t actTime = gs.countDown;
+	refresh_timer(actTime);
 	
 	LPC_TIM1->IR |= 1;
   return;
