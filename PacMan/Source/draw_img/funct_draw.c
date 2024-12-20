@@ -100,6 +100,21 @@ void refresh_points(uint32_t points)
 	GUI_Text(196, 7, (uint8_t *) str, White, Black);
 }
 
+void draw_cancel_pause(uint8_t option)
+{
+	//cancella
+	if(option == 0)
+	{
+		GUI_Text(96, 144, (uint8_t *) "PAUSE!", Black, Black);
+	}
+	//disegna
+	else
+	{
+		GUI_Text(96, 144, (uint8_t *) "PAUSE!", Yellow, Black);
+	}
+	
+}
+
 void LCD_DrawLineHorizontal(uint16_t x0, uint16_t y0, uint16_t x1, uint16_t color)
 {
 	while(x0 <= x1){

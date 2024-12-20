@@ -17,6 +17,7 @@
 
 extern game_state gs;
 extern uint8_t changeScore;
+uint8_t changeTime = 0;
 
 /******************************************************************************
 ** Function name:		Timer0_IRQHandler
@@ -34,12 +35,6 @@ void TIMER0_IRQHandler (void)
 	{
 		Direction currentDir = gs.actDir;
 		direct_pacMan(currentDir);
-		
-		if(changeScore == 1)
-		{
-				uint32_t actPoints = gs.score;
-				//refresh_points(actPoints);
-		}
   }
 	else
 	{
@@ -66,8 +61,7 @@ void TIMER0_IRQHandler (void)
 void TIMER1_IRQHandler (void)
 {
 	gs.countDown = gs.countDown - 1;
-	uint32_t actTime = gs.countDown;
-	refresh_timer(actTime);
+	changeTime = 1;
 	
 	LPC_TIM1->IR |= 1;
   return;
@@ -75,7 +69,7 @@ void TIMER1_IRQHandler (void)
 
 void TIMER2_IRQHandler (void)
 {
-	//your code here
+	//refresh_screen();
 	
 	LPC_TIM2->IR |= 1;
   return;

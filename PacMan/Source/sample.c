@@ -43,7 +43,9 @@ volatile game_state gs = {
 		.posPac_Col = 0,
 		.countDown = 60,
 		.score = 0,
-		.actDir = STOP
+		.lives = 1,
+		.actDir = STOP,
+		.isPause = 0
 };
 
 int main(void)

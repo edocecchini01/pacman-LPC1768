@@ -20,3 +20,5 @@ void draw_pacMan(uint16_t x0, uint16_t y0, uint16_t color);
 void refresh_timer(uint32_t time);
 
 void refresh_points(uint32_t points);
+
+void draw_cancel_pause(uint8_t option);

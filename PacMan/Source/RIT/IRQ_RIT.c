@@ -45,7 +45,16 @@ if(down_0 !=0){   //verifica se una delle down è != 0, implica che è stata scate
 	if((LPC_GPIO2->FIOPIN & (1<<10)) == 0){ //leggiamo il segnale, se zero allora il pulsante è premuto
 		switch(down_0){
 			case 2:     //case a 2 perchè nell'Interrupt handler del pulsante impostiamo down a 1 e qui la incrementiamo nuovamente
-				//your code here
+				if(gs.isPause == 0)
+				{
+					gs.isPause = 1;
+					pause_resume_game(0);
+				}
+				else
+				{
+					gs.isPause = 0;
+					pause_resume_game(1);
+				}
 			
 				break;
 			default:

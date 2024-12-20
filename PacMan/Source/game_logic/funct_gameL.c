@@ -1,5 +1,6 @@
 #include "gameL.h"
 #include "draw_img/draw.h"
+#include "timer/timer.h"
 
 //NOTA: il display è ruotato
 
@@ -90,21 +91,39 @@ const uint8_t back_matrix[ROWS][COLUMNS] = {
 
 extern game_state gs;
 extern mapOff[];
+extern changeTime;
 uint8_t changeScore = 0;
 
-void count_down()
-{
-	uint32_t count = 1 * 25000000; //1 secondo
-	init_timer(1, 0, count);
-	enable_timer(1);
-}
 
-void tim_PacMan(uint32_t speed) //in milliseconds
+/*
+	game_tim_init GUIDE:
+	
+	TIM0 -> PACMAN
+	TIM1 -> COUNTDOWN
+	TIM2 -> REFRESH SCREEN
+*/
+
+void game_tim_init(uint32_t timer, uint32_t speed) //in milliseconds
 {
-	uint64_t temp = speed * 25000000;
-	uint32_t count = temp/1000;
-	init_timer(0, 0, count);
-	//enable_timer(0);
+	uint32_t count = speed * 25000;
+	
+	switch (timer){
+		case 0:
+			init_timer(timer, 0, count);
+			enable_timer(timer);
+			break;
+		case 1:
+			init_timer(timer, 0, count);
+			enable_timer(timer);
+			break;
+		case 2:
+			init_timer(timer, 0, count);
+			enable_timer(timer);
+			break;
+		default:
+			init_timer(0, 0, count);
+			enable_timer(0);
+	}
 }
 
 void game_init()
@@ -114,8 +133,9 @@ void game_init()
 	GUI_Text(140, 7, (uint8_t *) "SCORE:", White, Black);
 	GUI_Text(196, 7, (uint8_t *) "00", White, Black);
 	
-	tim_PacMan(300);
-	count_down();
+	game_tim_init(0,200);	//PACMAN SPEED MOVMENT SET TO 400ms
+	game_tim_init(1,1000); //START COUNTDOWN
+	//game_tim_init(2,1050); //START REFRESH SYSTEM
 }
 
 void draw_backgoround(uint32_t off_X, uint32_t off_Y)
@@ -224,7 +244,42 @@ void add_score(uint32_t points)
 	gs.score += points;
 }
 
-void mod_objMat(uint32_t i, uint32_t j, uint32_t new_obj)
+void refresh_screen()
 {
-	//permette di modificare gli oggetti all'interno della matrice
+	if(changeScore == 1)
+	{
+			uint32_t actPoints = gs.score;
+			refresh_points(actPoints);
+			changeScore = 0;
+	}
+	if(changeTime == 1)
+	{
+			uint32_t actTime = gs.countDown;
+			refresh_timer(actTime);
+			changeTime = 0;
+	}
+}
+
+void pause_resume_game(uint8_t state)
+{
+	//THE GAME IS ACTIVE
+	if(state == 0)
+	{
+		//NVIC_DisableIRQ(EINT0_IRQn);
+		disable_timer(0);
+		disable_timer(1);
+		disable_timer(2);
+		draw_cancel_pause(1);
+		//NVIC_EnableIRQ(EINT0_IRQn);
+	}
+	//GAME IS IN PAUSE
+	else 
+	{
+		//NVIC_DisableIRQ(EINT0_IRQn);
+		enable_timer(0);
+		enable_timer(1);
+		enable_timer(2);
+		draw_cancel_pause(0);
+		//NVIC_EnableIRQ(EINT0_IRQn);
+  }
 }
