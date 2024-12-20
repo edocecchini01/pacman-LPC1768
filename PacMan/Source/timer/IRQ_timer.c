@@ -16,6 +16,7 @@
 #include <stdio.h> /*for sprintf*/
 
 extern game_state gs;
+extern uint8_t changeScore;
 
 /******************************************************************************
 ** Function name:		Timer0_IRQHandler
@@ -30,16 +31,22 @@ extern game_state gs;
 void TIMER0_IRQHandler (void)
 {
 	if(gs.actDir != STOP)
+	{
+		Direction currentDir = gs.actDir;
+		direct_pacMan(currentDir);
+		
+		if(changeScore == 1)
 		{
-			Direction currentDir = gs.actDir;
-			direct_pacMan(currentDir);
-    }
+				uint32_t actPoints = gs.score;
+				//refresh_points(actPoints);
+		}
+  }
 	else
 	{
 		disable_timer(0);
 	}
 	
-	reset_RIT();
+	reset_RIT();					//gestice il bug dell'emulatore
   LPC_TIM0->IR = 1;			/* clear interrupt flag */
   return;
 }

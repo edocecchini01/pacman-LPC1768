@@ -28,7 +28,8 @@ void draw_tail_0(uint16_t x0, uint16_t y0) //quadrato 8x8
 	
 	for(i = 0; i<8; i++)
 	{
-		LCD_DrawLine(x0,y0+i,x0+7,y0+i, Blue);
+		LCD_DrawLineHorizontal(x0,y0+i,x0+7,Blue);
+		//LCD_DrawLine(x0,y0+i,x0+7,y0+i, Blue); 
 	}
 	
 }
@@ -41,24 +42,24 @@ void draw_obj(uint16_t x0, uint16_t y0, uint16_t obj)
 		case 0: //CORRIDOIO
 			for(i = 0; i<8; i++)
 			{
-				LCD_DrawLine(x0,y0+i,x0+7,y0+i, Black);
+				LCD_DrawLineHorizontal(x0,y0+i,x0+7,Black);
 			}
 			break;
 		case 1: //PACMAN
-			LCD_DrawLine(x0+2, y0, x0+5, y0, Yellow);
-			LCD_DrawLine(x0+1, y0+1, x0+6, y0, Yellow);
-			LCD_DrawLine(x0, y0+2, x0+7, y0+2, Yellow);
-			LCD_DrawLine(x0, y0+3, x0+4, y0+3, Yellow);
-			LCD_DrawLine(x0, y0+4, x0+4, y0+4, Yellow);
-			LCD_DrawLine(x0, y0+5, x0+7, y0+5, Yellow);
-			LCD_DrawLine(x0+1, y0+6, x0+6, y0+6, Yellow);
-			LCD_DrawLine(x0+2, y0+7, x0+5, y0+7, Yellow);
+			LCD_DrawLineHorizontal(x0+2, y0, x0+5, Yellow);
+			LCD_DrawLineHorizontal(x0+1, y0+1, x0+6, Yellow);
+			LCD_DrawLineHorizontal(x0, y0+2, x0+7, Yellow);
+			LCD_DrawLineHorizontal(x0, y0+3, x0+4, Yellow);
+			LCD_DrawLineHorizontal(x0, y0+4, x0+4, Yellow);
+			LCD_DrawLineHorizontal(x0, y0+5, x0+7, Yellow);
+			LCD_DrawLineHorizontal(x0+1, y0+6, x0+6, Yellow);
+			LCD_DrawLineHorizontal(x0+2, y0+7, x0+5, Yellow);
 			break;
 		case 3: //PILLS
-			LCD_DrawLine(x0+3, y0+2, x0+4, y0+2, SalmonPink);
-			LCD_DrawLine(x0+2, y0+3, x0+5, y0+3, SalmonPink);
-			LCD_DrawLine(x0+2, y0+4, x0+5, y0+4, SalmonPink);
-			LCD_DrawLine(x0+3, y0+5, x0+4, y0+5, SalmonPink);
+			LCD_DrawLineHorizontal(x0+3, y0+2, x0+4, SalmonPink);
+			LCD_DrawLineHorizontal(x0+2, y0+3, x0+5, SalmonPink);
+			LCD_DrawLineHorizontal(x0+2, y0+4, x0+5, SalmonPink);
+			LCD_DrawLineHorizontal(x0+3, y0+5, x0+4, SalmonPink);
 			break;
 		default:
 			break;
@@ -94,7 +95,24 @@ void refresh_timer(uint32_t time)
 
 void refresh_points(uint32_t points)
 {
-	char str[5];
+	char str[4];
 	sprintf(str, "%d", points);
 	GUI_Text(196, 7, (uint8_t *) str, White, Black);
+}
+
+void LCD_DrawLineHorizontal(uint16_t x0, uint16_t y0, uint16_t x1, uint16_t color)
+{
+	while(x0 <= x1){
+		LCD_SetPoint(x0, y0, color);
+		x0++;
+	}
+}
+
+//funzione custom che disegna SOLO dal'alto verso il basso
+void LCD_DrawLineVertical(uint16_t x0, uint16_t y0, uint16_t y1, uint16_t color)
+{
+	while(y0 <= y1){
+		LCD_SetPoint(x0, y0, color);
+		y0++;
+	}
 }

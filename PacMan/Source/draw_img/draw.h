@@ -3,6 +3,10 @@
 #include "GLCD/GLCD.h"
 //#include "game_logic/gameL.h"
 
+void LCD_DrawLineVertical(uint16_t x0, uint16_t y0, uint16_t y1, uint16_t color);
+
+void LCD_DrawLineHorizontal(uint16_t x0, uint16_t y0, uint16_t x1, uint16_t color);
+
 void draw_tail_1(uint16_t x0, uint16_t y0);
 
 void draw_tail2(uint16_t x0, uint16_t y0);

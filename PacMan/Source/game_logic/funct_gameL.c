@@ -90,6 +90,7 @@ const uint8_t back_matrix[ROWS][COLUMNS] = {
 
 extern game_state gs;
 extern mapOff[];
+uint8_t changeScore = 0;
 
 void count_down()
 {
@@ -156,26 +157,30 @@ void draw_backgoround(uint32_t off_X, uint32_t off_Y)
 
 void move_pacMan(int movRow, int movCol)
 {
+	changeScore = 0;
 	int newPosRow = gs.posPac_Row + movRow;
   int newPosCol = gs.posPac_Col + movCol;
 	
 	if(obj_matrix[newPosRow][newPosCol] == 2)  // la nuova posizione è un muro
   {
 		gs.actDir = STOP;
+		return;
   }
 	else
 	{
 		if(obj_matrix[newPosRow][newPosCol] == 3) //standard pill
 		{
 			add_score(10);
+			changeScore = 1;
 		}
 		else if(obj_matrix[newPosRow][newPosCol] == 4) //power pill
 		{
 			add_score(50);
+			changeScore = 1;
 		}
 		
 		draw_obj((gs.posPac_Col * 8)+ mapOff[0], (gs.posPac_Row * 8)+ mapOff[1], 0);  // Cancella nella vecchia posizione
-    obj_matrix[gs.posPac_Row][gs.posPac_Col] = 0;
+    obj_matrix[gs.posPac_Row][gs.posPac_Col] = 0;	//setta 0 nella posizione attuale della matrice degli oggetti
 		
 		if(movCol == 0)  // Movimento lungo le righe (Y)
     {
@@ -188,7 +193,7 @@ void move_pacMan(int movRow, int movCol)
 		
 		gs.posPac_Row = newPosRow;
 		gs.posPac_Col = newPosCol;
-		obj_matrix[gs.posPac_Row][gs.posPac_Col] = 1;
+		obj_matrix[gs.posPac_Row][gs.posPac_Col] = 1;	//sposta pacman nella nuova posizione, nella matrice degli oggetti
 		
 	}
 	
@@ -217,8 +222,6 @@ void direct_pacMan(Direction direction)
 void add_score(uint32_t points)
 {
 	gs.score += points;
-	uint32_t actPoints = gs.score;
-	refresh_points(actPoints);
 }
 
 void mod_objMat(uint32_t i, uint32_t j, uint32_t new_obj)
