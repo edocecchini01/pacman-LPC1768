@@ -204,11 +204,6 @@ if(down_2 !=0){
 			joystic_sel=0;
 	}
 	
-	if(gs.actDir != STOP)
-	{
-		enable_timer(0);
-	}
-	
 	reset_RIT();
   LPC_RIT->RICTRL |= 0x1;	/* clear interrupt flag */
 	

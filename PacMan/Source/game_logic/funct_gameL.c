@@ -1,13 +1,14 @@
 #include "gameL.h"
 #include "draw_img/draw.h"
 #include "timer/timer.h"
+#include "RIT/RIT.h"
 
 //NOTA: il display è ruotato
 
 #define ROWS 31
 #define COLUMNS 28
 
-uint8_t obj_matrix[ROWS][COLUMNS] = {
+volatile uint8_t obj_matrix[ROWS][COLUMNS] = {
     {2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2},
     {2, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 2, 2, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 2},
     {2, 3, 2, 2, 2, 2, 3, 2, 2, 2, 2, 2, 3, 2, 2, 3, 2, 2, 2, 2, 2, 3, 2, 2, 2, 2, 3, 2},
@@ -53,7 +54,7 @@ uint8_t obj_matrix[ROWS][COLUMNS] = {
 */
 
 
-const uint8_t back_matrix[ROWS][COLUMNS] = {
+volatile const uint8_t back_matrix[ROWS][COLUMNS] = {
 	
 	  {1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1},
     {1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1},
@@ -89,10 +90,11 @@ const uint8_t back_matrix[ROWS][COLUMNS] = {
 			
 	};
 
+volatile uint8_t changeScore = 0;	
+
 extern game_state gs;
 extern mapOff[];
 extern changeTime;
-uint8_t changeScore = 0;
 
 
 /*
@@ -133,9 +135,9 @@ void game_init()
 	GUI_Text(140, 7, (uint8_t *) "SCORE:", White, Black);
 	GUI_Text(196, 7, (uint8_t *) "00", White, Black);
 	
-	game_tim_init(0,200);	//PACMAN SPEED MOVMENT SET TO 400ms
+	game_tim_init(0,200);	//PACMAN SPEED MOVMENT SET TO 300ms
 	game_tim_init(1,1000); //START COUNTDOWN
-	//game_tim_init(2,1050); //START REFRESH SYSTEM
+	game_tim_init(2,500); //START REFRESH SYSTEM
 }
 
 void draw_backgoround(uint32_t off_X, uint32_t off_Y)
@@ -270,16 +272,18 @@ void pause_resume_game(uint8_t state)
 		disable_timer(1);
 		disable_timer(2);
 		draw_cancel_pause(1);
+		reset_RIT();
 		//NVIC_EnableIRQ(EINT0_IRQn);
 	}
 	//GAME IS IN PAUSE
 	else 
 	{
 		//NVIC_DisableIRQ(EINT0_IRQn);
+		draw_cancel_pause(0);
+		reset_RIT();
 		enable_timer(0);
 		enable_timer(1);
 		enable_timer(2);
-		draw_cancel_pause(0);
 		//NVIC_EnableIRQ(EINT0_IRQn);
   }
 }

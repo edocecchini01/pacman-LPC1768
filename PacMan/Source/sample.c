@@ -36,7 +36,7 @@
 extern uint8_t ScaleFlag; // <- ScaleFlag needs to visible in order for the emulator to find the symbol (can be placed also inside system_LPC17xx.h but since it is RO, it needs more work)
 #endif
 
-const mapOff[2] = {8,32}; //offset x,y
+volatile const mapOff[2] = {8,32}; //offset x,y
 
 volatile game_state gs = {
 		.posPac_Row = 0,

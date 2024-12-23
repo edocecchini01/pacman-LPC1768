@@ -15,9 +15,9 @@
 #include "game_logic/gameL.h"
 #include <stdio.h> /*for sprintf*/
 
+volatile uint8_t changeTime = 0;
 extern game_state gs;
 extern uint8_t changeScore;
-uint8_t changeTime = 0;
 
 /******************************************************************************
 ** Function name:		Timer0_IRQHandler
@@ -36,12 +36,8 @@ void TIMER0_IRQHandler (void)
 		Direction currentDir = gs.actDir;
 		direct_pacMan(currentDir);
   }
-	else
-	{
-		disable_timer(0);
-	}
 	
-	reset_RIT();					//gestice il bug dell'emulatore
+	//reset_RIT();					//gestice il bug dell'emulatore
   LPC_TIM0->IR = 1;			/* clear interrupt flag */
   return;
 }
@@ -69,7 +65,7 @@ void TIMER1_IRQHandler (void)
 
 void TIMER2_IRQHandler (void)
 {
-	//refresh_screen();
+	refresh_screen();
 	
 	LPC_TIM2->IR |= 1;
   return;
