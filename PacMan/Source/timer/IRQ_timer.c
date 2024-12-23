@@ -15,9 +15,8 @@
 #include "game_logic/gameL.h"
 #include <stdio.h> /*for sprintf*/
 
-volatile uint8_t changeTime = 0;
 extern game_state gs;
-extern uint8_t changeScore;
+extern GUI_changes guiCh;
 
 /******************************************************************************
 ** Function name:		Timer0_IRQHandler
@@ -57,7 +56,7 @@ void TIMER0_IRQHandler (void)
 void TIMER1_IRQHandler (void)
 {
 	gs.countDown = gs.countDown - 1;
-	changeTime = 1;
+	guiCh.changeTime = 1;
 	
 	LPC_TIM1->IR |= 1;
   return;
@@ -65,6 +64,7 @@ void TIMER1_IRQHandler (void)
 
 void TIMER2_IRQHandler (void)
 {
+
 	refresh_screen();
 	
 	LPC_TIM2->IR |= 1;

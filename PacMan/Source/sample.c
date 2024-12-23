@@ -44,8 +44,15 @@ volatile game_state gs = {
 		.countDown = 60,
 		.score = 0,
 		.lives = 1,
+		.next_life_threshold = 1000,
 		.actDir = STOP,
 		.isPause = 0
+};
+
+volatile GUI_changes guiCh = {
+		.changeScore = 0,
+		.changeTime = 0,
+		.changeLive = 0
 };
 
 int main(void)

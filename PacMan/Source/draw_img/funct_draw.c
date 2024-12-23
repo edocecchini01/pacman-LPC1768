@@ -67,22 +67,21 @@ void draw_obj(uint16_t x0, uint16_t y0, uint16_t obj)
 	
 }
 
-void draw_pacMan(uint16_t x0, uint16_t y0, uint16_t color)
+void draw_pacMan_live(uint16_t x0, uint16_t y0, uint16_t color)
 {
-		LCD_DrawLine(x0+4, y0, x0+9, y0 ,color);
-		LCD_DrawLine(x0+2, y0+1, x0+11, y0+1,color);
-		LCD_DrawLine(x0+1, y0+2, x0+12, y0+2,color);
-		LCD_DrawLine(x0+1, y0+3, x0+12, y0+3,color);
-		LCD_DrawLine(x0+3, y0+4, x0+13, y0+4,color);
-		LCD_DrawLine(x0+6, y0+5, x0+13, y0+5,color);
-		LCD_DrawLine(x0+9, y0+6, x0+13, y0+6,color);//CENTRO
-		LCD_DrawLine(x0+6, y0+7, x0+13, y0+7,color);
-		LCD_DrawLine(x0+3, y0+8, x0+13, y0+8,color);
-		LCD_DrawLine(x0+1, y0+9, x0+12, y0+9,color);
-		LCD_DrawLine(x0+1, y0+10, x0+12,y0+10,color);
-		LCD_DrawLine(x0+2, y0+11, x0+11,y0+11,color);
-		LCD_DrawLine(x0+4, y0+12, x0+9, y0+12,color);		
-		LCD_SetPoint(x0, y0, Green);
+		LCD_DrawLineHorizontal(x0+4, y0, x0+9,color);
+		LCD_DrawLineHorizontal(x0+2, y0+1, x0+11,color);
+		LCD_DrawLineHorizontal(x0+1, y0+2, x0+12,color);
+		LCD_DrawLineHorizontal(x0+1, y0+3, x0+12,color);
+		LCD_DrawLineHorizontal(x0+3, y0+4, x0+13,color);
+		LCD_DrawLineHorizontal(x0+6, y0+5, x0+13,color);
+		LCD_DrawLineHorizontal(x0+9, y0+6, x0+13,color);//CENTRO
+		LCD_DrawLineHorizontal(x0+6, y0+7, x0+13,color);
+		LCD_DrawLineHorizontal(x0+3, y0+8, x0+13,color);
+		LCD_DrawLineHorizontal(x0+1, y0+9, x0+12,color);
+		LCD_DrawLineHorizontal(x0+1, y0+10, x0+12,color);
+		LCD_DrawLineHorizontal(x0+2, y0+11, x0+11,color);
+		LCD_DrawLineHorizontal(x0+4, y0+12, x0+9,color);
 }
 
 
@@ -98,6 +97,11 @@ void refresh_points(uint32_t points)
 	char str[4];
 	sprintf(str, "%d", points);
 	GUI_Text(196, 7, (uint8_t *) str, White, Black);
+}
+
+void refresh_lives(uint32_t lives)
+{
+	draw_obj((lives*16),288, 1);
 }
 
 void draw_cancel_pause(uint8_t option)

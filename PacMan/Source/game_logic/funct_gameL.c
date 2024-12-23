@@ -90,11 +90,10 @@ volatile const uint8_t back_matrix[ROWS][COLUMNS] = {
 			
 	};
 
-volatile uint8_t changeScore = 0;	
 
 extern game_state gs;
+extern GUI_changes guiCh; 
 extern mapOff[];
-extern changeTime;
 
 
 /*
@@ -134,8 +133,9 @@ void game_init()
 	GUI_Text(96, 7, (uint8_t *) "60", White, Black);
 	GUI_Text(140, 7, (uint8_t *) "SCORE:", White, Black);
 	GUI_Text(196, 7, (uint8_t *) "00", White, Black);
+	draw_obj(8, 288, 1); //disegna la prima vita
 	
-	game_tim_init(0,200);	//PACMAN SPEED MOVMENT SET TO 300ms
+	game_tim_init(0,250);	//PACMAN SPEED MOVMENT SET TO 250ms
 	game_tim_init(1,1000); //START COUNTDOWN
 	game_tim_init(2,500); //START REFRESH SYSTEM
 }
@@ -179,9 +179,20 @@ void draw_backgoround(uint32_t off_X, uint32_t off_Y)
 
 void move_pacMan(int movRow, int movCol)
 {
-	changeScore = 0;
+	guiCh.changeScore = 0;
 	int newPosRow = gs.posPac_Row + movRow;
   int newPosCol = gs.posPac_Col + movCol;
+	
+	//gestione teletrasporto
+	
+	if(newPosCol > 27)
+	{
+		newPosCol = 0;
+	}
+	else if(newPosCol < 0)
+	{
+		newPosCol = 27;
+	}
 	
 	if(obj_matrix[newPosRow][newPosCol] == 2)  // la nuova posizione è un muro
   {
@@ -193,12 +204,12 @@ void move_pacMan(int movRow, int movCol)
 		if(obj_matrix[newPosRow][newPosCol] == 3) //standard pill
 		{
 			add_score(10);
-			changeScore = 1;
+			guiCh.changeScore = 1;
 		}
 		else if(obj_matrix[newPosRow][newPosCol] == 4) //power pill
 		{
 			add_score(50);
-			changeScore = 1;
+			guiCh.changeScore = 1;
 		}
 		
 		draw_obj((gs.posPac_Col * 8)+ mapOff[0], (gs.posPac_Row * 8)+ mapOff[1], 0);  // Cancella nella vecchia posizione
@@ -244,22 +255,37 @@ void direct_pacMan(Direction direction)
 void add_score(uint32_t points)
 {
 	gs.score += points;
+	if(gs.score >= gs.next_life_threshold)
+	{
+		gs.lives += 1;
+		gs.next_life_threshold += 1000;
+		guiCh.changeLive = 1;
+	}
 }
 
 void refresh_screen()
 {
-	if(changeScore == 1)
+	if(guiCh.changeScore == 1)
 	{
 			uint32_t actPoints = gs.score;
 			refresh_points(actPoints);
-			changeScore = 0;
+			guiCh.changeScore = 0;
 	}
-	if(changeTime == 1)
+	if(guiCh.changeTime == 1)
 	{
 			uint32_t actTime = gs.countDown;
 			refresh_timer(actTime);
-			changeTime = 0;
+			guiCh.changeTime = 0;
 	}
+	/*
+	BUGGATO -> ci entra dopo molto più tempo anche se changeLive == 1 e poi blocca tutto dopo un po'
+	if(guiCh.changeLive == 1)
+	{
+			uint32_t actLives = gs.lives;
+			refresh_lives(actLives);
+			guiCh.changeLive = 0;
+	}
+	*/
 }
 
 void pause_resume_game(uint8_t state)
