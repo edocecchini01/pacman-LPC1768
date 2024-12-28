@@ -35,3 +35,5 @@ void add_score(uint32_t points);
 void refresh_screen();
 
 void pause_resume_game(uint8_t state);
+
+void end_game(uint8_t win);

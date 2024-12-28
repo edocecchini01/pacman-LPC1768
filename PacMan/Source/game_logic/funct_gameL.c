@@ -32,8 +32,8 @@ volatile uint8_t obj_matrix[ROWS][COLUMNS] = {
     {2, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 2, 2, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 2},
     {2, 3, 2, 2, 2, 2, 3, 2, 2, 2, 2, 2, 3, 2, 2, 3, 2, 2, 2, 2, 2, 3, 2, 2, 2, 2, 3, 2},
     {2, 3, 2, 2, 2, 2, 3, 2, 2, 2, 2, 2, 3, 2, 2, 3, 2, 2, 2, 2, 2, 3, 2, 2, 2, 2, 3, 2},
-    {2, 3, 3, 3, 2, 2, 3, 3, 3, 3, 3, 3, 3, 1, 0, 3, 3, 3, 3, 3, 3, 3, 2, 2, 3, 3, 3, 2},
-    {2, 2, 2, 3, 2, 2, 3, 3, 3, 3, 2, 2, 2, 2, 2, 2, 2, 2, 3, 3, 3, 3, 2, 2, 3, 2, 2, 2},
+    {2, 3, 3, 3, 2, 2, 3, 0, 0, 3, 3, 3, 3, 1, 0, 3, 3, 3, 3, 0, 0, 3, 2, 2, 3, 3, 3, 2},
+    {2, 2, 2, 3, 2, 2, 3, 0, 0, 3, 2, 2, 2, 2, 2, 2, 2, 2, 3, 0, 0, 3, 2, 2, 3, 2, 2, 2},
     {2, 2, 2, 3, 2, 2, 3, 2, 2, 3, 2, 2, 2, 2, 2, 2, 2, 2, 3, 2, 2, 3, 2, 2, 3, 2, 2, 2},
     {2, 3, 3, 3, 3, 3, 3, 2, 2, 3, 3, 3, 3, 2, 2, 3, 3, 3, 3, 2, 2, 3, 3, 3, 3, 3, 3, 2},
     {2, 3, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 3, 2, 2, 3, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 3, 2},
@@ -150,7 +150,7 @@ void draw_backgoround(uint32_t off_X, uint32_t off_Y)
 				case 0:		
 				break;
 				case 1:
-					draw_tail_0((j*8)+off_X,(i*8)+off_Y);
+					draw_scalPixel((j*8)+off_X,(i*8)+off_Y,2); //muro blu
 				break;
 				case 2:
 					//draw_tail_2((i+off_X)*7,(j+off_Y)*7);
@@ -261,8 +261,14 @@ void add_score(uint32_t points)
 		gs.next_life_threshold += 1000;
 		guiCh.changeLive = 1;
 	}
+	
+	if(gs.score >= 2640)
+	{
+		end_game(1);
+	}
 }
 
+//causa un blocco nel gioco
 void refresh_screen()
 {
 	if(guiCh.changeScore == 1)
@@ -286,6 +292,7 @@ void refresh_screen()
 			guiCh.changeLive = 0;
 	}
 	*/
+	return;
 }
 
 void pause_resume_game(uint8_t state)
@@ -312,4 +319,14 @@ void pause_resume_game(uint8_t state)
 		enable_timer(2);
 		//NVIC_EnableIRQ(EINT0_IRQn);
   }
+}
+
+void end_game(uint8_t win)
+{
+		NVIC_DisableIRQ(EINT0_IRQn);
+		disable_timer(0);
+		disable_timer(1);
+		disable_timer(2);
+		disable_RIT();
+		draw_win_loose_screen(win);
 }

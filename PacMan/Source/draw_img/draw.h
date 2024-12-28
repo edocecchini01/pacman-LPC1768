@@ -11,7 +11,7 @@ void draw_tail_1(uint16_t x0, uint16_t y0);
 
 void draw_tail2(uint16_t x0, uint16_t y0);
 
-void draw_tail_0(uint16_t x0, uint16_t y0);
+void draw_scalPixel(uint16_t x0, uint16_t y0, uint16_t color);
 
 void draw_obj(uint16_t x0, uint16_t y0, uint16_t obj);
 
@@ -24,3 +24,6 @@ void refresh_points(uint32_t points);
 void refresh_lives(uint32_t lives);
 
 void draw_cancel_pause(uint8_t option);
+
+void draw_win_loose_screen(uint8_t win);
+

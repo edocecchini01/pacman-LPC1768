@@ -58,6 +58,11 @@ void TIMER1_IRQHandler (void)
 	gs.countDown = gs.countDown - 1;
 	guiCh.changeTime = 1;
 	
+	if(gs.countDown <= 0)
+	{
+		end_game(0);
+	}
+	
 	LPC_TIM1->IR |= 1;
   return;
 }
