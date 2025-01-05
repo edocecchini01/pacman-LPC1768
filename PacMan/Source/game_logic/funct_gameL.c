@@ -94,7 +94,7 @@ volatile const uint8_t back_matrix[ROWS][COLUMNS] = {
 extern game_state gs;
 extern GUI_changes guiCh; 
 extern mapOff[];
-
+extern random_init rand_init;
 
 /*
 	game_tim_init GUIDE:
@@ -250,6 +250,42 @@ void direct_pacMan(Direction direction)
 		default:
 			break;
 	}
+}
+
+void init_powerPills()
+{
+	multiple_random_gen(6, 1, COLUMNS-2, rand_init.powerPill_Col);
+	multiple_random_gen(6, 1, ROWS-2, rand_init.powerPill_Row);
+	rand_init.powerPill_Tim = single_randonm_gen(1,15);
+}
+
+void gen_powerPills()
+{
+	int i = 0;
+	uint32_t actRow = 0;
+	uint32_t actCol = 0;
+	for(i=0;i<6;i++)
+	{
+		actRow = rand_init.powerPill_Row[i];
+		actCol = rand_init.powerPill_Col[i];
+		while (obj_matrix[actRow][actCol] != 3) {
+			actRow++;
+			if(actRow == ROWS-2)
+			{
+				if(actCol < COLUMNS-2)
+				{
+					actRow = 1;
+					actCol++;
+				}else{
+					actRow = 1;
+					actCol = 1;
+				}
+			}
+		}
+		obj_matrix[actRow][actCol] = 4;
+		draw_obj((actCol * 8)+ mapOff[0], (actRow * 8)+ mapOff[1], 4);
+	}
+	gs.isPowerGen = 1;
 }
 
 void add_score(uint32_t points)

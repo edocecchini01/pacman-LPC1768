@@ -1,17 +1,22 @@
 #include "utils.h"
 #include "timer.h"
+#include "RIT/RIT.h"
 
-/*
-void wait_milli(uint32_t time)
+uint32_t single_randonm_gen(uint32_t min, uint32_t max)
 {
-	uint32_t count = (time * 25000000)/1000;
-	init_timer(0, 0, count);
-	enable_timer(0);
+	int i = 0;
+	uint32_t result;
 	
-	while(LPC_TIM0->TC < count){
-		//wait
-	}
+	result = rand() % (max - min + 1) + min;
 	
-	disable_timer(0);
+	return result;
 }
-*/
+
+void multiple_random_gen(uint32_t n, uint32_t min, uint32_t max, uint32_t *result)
+{
+	int i = 0;
+
+  for (i = 0; i < n; i++) {
+		result[i] = rand() % (max - min + 1) + min;
+  }
+}

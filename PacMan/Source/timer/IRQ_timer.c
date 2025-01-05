@@ -16,6 +16,7 @@
 #include <stdio.h> /*for sprintf*/
 
 extern game_state gs;
+extern random_init rand_init;
 extern GUI_changes guiCh;
 
 /******************************************************************************
@@ -57,6 +58,11 @@ void TIMER1_IRQHandler (void)
 {
 	gs.countDown = gs.countDown - 1;
 	guiCh.changeTime = 1;
+	
+	if(gs.countDown <= (60-rand_init.powerPill_Tim) && gs.isPowerGen == 0)
+	{
+		gen_powerPills();
+	}
 	
 	if(gs.countDown <= 0)
 	{

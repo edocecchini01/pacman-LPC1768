@@ -46,7 +46,14 @@ volatile game_state gs = {
 		.lives = 1,
 		.next_life_threshold = 1000,
 		.actDir = STOP,
-		.isPause = 0
+		.isPause = 0,
+		.isPowerGen = 0
+};
+
+volatile random_init rand_init = {
+	.powerPill_Row = 0,
+	.powerPill_Col = 0,
+	.powerPill_Tim = 0
 };
 
 volatile GUI_changes guiCh = {
@@ -70,6 +77,10 @@ int main(void)
 	draw_backgoround(mapOff[0], mapOff[1]);
 	
 	game_init();
+	
+	srand((LPC_RIT->RICOUNTER ^ LPC_TIM0->TC) & 0xFFFFFFFF);
+	
+	init_powerPills();
 	
 	LPC_SC->PCON |= 0x1;									/* power-down	mode										*/
 	LPC_SC->PCON &= ~(0x2);						
