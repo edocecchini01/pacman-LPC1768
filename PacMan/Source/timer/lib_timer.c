@@ -187,7 +187,7 @@ uint32_t init_timer ( uint8_t timer_num, uint8_t match_register ,uint32_t TimerI
 
 	NVIC_EnableIRQ(TIMER0_IRQn);
 	/*NVIC_SetPriority(TIMER0_IRQn, 4);*/		/* less priority than buttons */
-	NVIC_SetPriority(TIMER0_IRQn, 1);		/* more priority than buttons */
+	NVIC_SetPriority(TIMER0_IRQn, 2);		/* more priority than buttons */
 	return (1);
   }
   else if ( timer_num == 1 )

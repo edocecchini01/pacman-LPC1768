@@ -155,12 +155,12 @@ void draw_obj(uint16_t x0, uint16_t y0, uint16_t obj)
 			LCD_DrawLineHorizontal(x0+3, y0+5, x0+4, SalmonPink);
 			break;
 		case 4: //POWERPILLS
-			LCD_DrawLineHorizontal(x0+2, y0+1, x0+5, SalmonPink);
-			LCD_DrawLineHorizontal(x0+1, y0+2, x0+6, SalmonPink);
-			LCD_DrawLineHorizontal(x0+1, y0+3, x0+6, SalmonPink);
-			LCD_DrawLineHorizontal(x0+1, y0+4, x0+6, SalmonPink);
-			LCD_DrawLineHorizontal(x0+1, y0+5, x0+6, SalmonPink);
-			LCD_DrawLineHorizontal(x0+2, y0+6, x0+5, SalmonPink);
+			LCD_DrawLineHorizontal(x0+2, y0+1, x0+5, Red);
+			LCD_DrawLineHorizontal(x0+1, y0+2, x0+6, Red);
+			LCD_DrawLineHorizontal(x0+1, y0+3, x0+6, Red);
+			LCD_DrawLineHorizontal(x0+1, y0+4, x0+6, Red);
+			LCD_DrawLineHorizontal(x0+1, y0+5, x0+6, Red);
+			LCD_DrawLineHorizontal(x0+2, y0+6, x0+5, Red);
 			break;
 		default:
 			break;
