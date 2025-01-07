@@ -47,19 +47,14 @@ volatile game_state gs = {
 		.next_life_threshold = 1000,
 		.actDir = STOP,
 		.isPause = 0,
-		.isPowerGen = 0
+		.isPowerGen = 0,
+		.changeScoreUI = 0
 };
 
 volatile random_init rand_init = {
 	.powerPill_Row = 0,
 	.powerPill_Col = 0,
 	.powerPill_Tim = 0
-};
-
-volatile GUI_changes guiCh = {
-		.changeScore = 0,
-		.changeTime = 0,
-		.changeLive = 0
 };
 
 int main(void)

@@ -92,7 +92,6 @@ volatile const uint8_t back_matrix[ROWS][COLUMNS] = {
 
 
 extern game_state gs;
-extern GUI_changes guiCh; 
 extern mapOff[];
 extern random_init rand_init;
 
@@ -179,7 +178,7 @@ void draw_backgoround(uint32_t off_X, uint32_t off_Y)
 
 void move_pacMan(int movRow, int movCol)
 {
-	guiCh.changeScore = 0;
+	gs.changeScoreUI = 0;
 	int newPosRow = gs.posPac_Row + movRow;
   int newPosCol = gs.posPac_Col + movCol;
 	
@@ -204,12 +203,12 @@ void move_pacMan(int movRow, int movCol)
 		if(obj_matrix[newPosRow][newPosCol] == 3) //standard pill
 		{
 			add_score(10);
-			guiCh.changeScore = 1;
+			gs.changeScoreUI = 1;
 		}
 		else if(obj_matrix[newPosRow][newPosCol] == 4) //power pill
 		{
 			add_score(50);
-			guiCh.changeScore = 1;
+			gs.changeScoreUI = 1;
 		}
 		
 		draw_obj((gs.posPac_Col * 8)+ mapOff[0], (gs.posPac_Row * 8)+ mapOff[1], 0);  // Cancella nella vecchia posizione
@@ -295,40 +294,15 @@ void add_score(uint32_t points)
 	{
 		gs.lives += 1;
 		gs.next_life_threshold += 1000;
-		guiCh.changeLive = 1;
+		
+		uint32_t actLives = gs.lives;
+		refresh_lives(actLives);
 	}
 	
 	if(gs.score >= 2640)
 	{
 		end_game(1);
 	}
-}
-
-//causa un blocco nel gioco
-void refresh_screen()
-{
-	if(guiCh.changeScore == 1)
-	{
-			uint32_t actPoints = gs.score;
-			refresh_points(actPoints);
-			guiCh.changeScore = 0;
-	}
-	if(guiCh.changeTime == 1)
-	{
-			uint32_t actTime = gs.countDown;
-			refresh_timer(actTime);
-			guiCh.changeTime = 0;
-	}
-	/*
-	BUGGATO -> ci entra dopo molto più tempo anche se changeLive == 1 e poi blocca tutto dopo un po'
-	if(guiCh.changeLive == 1)
-	{
-			uint32_t actLives = gs.lives;
-			refresh_lives(actLives);
-			guiCh.changeLive = 0;
-	}
-	*/
-	return;
 }
 
 void pause_resume_game(uint8_t state)

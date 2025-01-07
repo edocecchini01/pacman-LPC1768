@@ -17,13 +17,8 @@ volatile typedef struct {
 		Direction actDir;
 		uint8_t isPause;
 		uint8_t isPowerGen;
+		uint8_t changeScoreUI;
 } game_state;
-
-volatile typedef struct {
-    uint8_t changeScore;
-		uint8_t changeTime;
-		uint8_t changeLive;
-} GUI_changes;
 
 void draw_backgoround(uint32_t off_X, uint32_t off_Y);
 
@@ -42,8 +37,6 @@ void init_powerPills();
 void gen_powerPills();
 
 void add_score(uint32_t points);
-
-void refresh_screen();
 
 void pause_resume_game(uint8_t state);
 

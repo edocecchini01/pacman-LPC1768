@@ -17,7 +17,6 @@
 
 extern game_state gs;
 extern random_init rand_init;
-extern GUI_changes guiCh;
 
 /******************************************************************************
 ** Function name:		Timer0_IRQHandler
@@ -57,7 +56,6 @@ void TIMER0_IRQHandler (void)
 void TIMER1_IRQHandler (void)
 {
 	gs.countDown = gs.countDown - 1;
-	guiCh.changeTime = 1;
 	
 	if(gs.countDown <= (60-rand_init.powerPill_Tim) && gs.isPowerGen == 0)
 	{
@@ -69,14 +67,22 @@ void TIMER1_IRQHandler (void)
 		end_game(0);
 	}
 	
+	uint32_t actTime = gs.countDown;
+	refresh_timer(actTime);
+	
 	LPC_TIM1->IR |= 1;
   return;
 }
 
 void TIMER2_IRQHandler (void)
 {
-
-	refresh_screen();
+	
+	if(gs.changeScoreUI == 1)
+	{
+			uint32_t actPoints = gs.score;
+			refresh_points(actPoints);
+			gs.changeScoreUI = 0;
+	}
 	
 	LPC_TIM2->IR |= 1;
   return;
