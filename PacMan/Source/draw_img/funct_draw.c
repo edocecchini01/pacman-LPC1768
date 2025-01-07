@@ -188,6 +188,11 @@ void draw_pacMan_live(uint16_t x0, uint16_t y0, uint16_t color)
 
 void refresh_timer(uint32_t time)
 {
+	if(time < 10)
+	{
+		draw_scalPixel(104, 7, 0);
+		draw_scalPixel(104, 15, 0);
+	}
 	char str[2];
 	sprintf(str, "%d", time);
 	GUI_Text(96, 7, (uint8_t *) str, White, Black);
@@ -202,7 +207,7 @@ void refresh_points(uint32_t points)
 
 void refresh_lives(uint32_t lives)
 {
-	draw_obj((lives*16),288, 1);
+	draw_pacMan_live((lives*16),288, Yellow);
 }
 
 void draw_cancel_pause(uint8_t option)

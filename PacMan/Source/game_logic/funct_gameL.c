@@ -132,7 +132,7 @@ void game_init()
 	GUI_Text(96, 7, (uint8_t *) "60", White, Black);
 	GUI_Text(140, 7, (uint8_t *) "SCORE:", White, Black);
 	GUI_Text(196, 7, (uint8_t *) "00", White, Black);
-	draw_obj(8, 288, 1); //disegna la prima vita
+	draw_pacMan_live(8, 288, Yellow); //disegna la prima vita
 	
 	game_tim_init(0,250);	//PACMAN SPEED MOVMENT SET TO 250ms
 	game_tim_init(1,1000); //START COUNTDOWN
