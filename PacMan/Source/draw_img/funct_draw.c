@@ -214,6 +214,15 @@ void draw_obj(uint16_t x0, uint16_t y0, uint16_t obj)
 	
 }
 
+void game_initUI()
+{
+	GUI_Text(8, 7, (uint8_t *) "GAME OVER:", White, Black);
+	GUI_Text(96, 7, (uint8_t *) "60", White, Black);
+	GUI_Text(140, 7, (uint8_t *) "SCORE:", White, Black);
+	GUI_Text(196, 7, (uint8_t *) "00", White, Black);
+	draw_pacMan_live(8, 288, Yellow); //disegna la prima vita
+}
+
 void draw_pacMan_live(uint16_t x0, uint16_t y0, uint16_t color)
 {
 		LCD_DrawLineHorizontal(x0+4, y0, x0+9,color);

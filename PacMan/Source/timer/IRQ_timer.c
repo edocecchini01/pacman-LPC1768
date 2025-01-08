@@ -7,13 +7,9 @@
 ** Correlated files:    timer.h
 **--------------------------------------------------------------------------------------------------------
 *********************************************************************************************************/
-#include <string.h>
 #include "LPC17xx.h"
 #include "timer.h"
-#include "../GLCD/GLCD.h" 
-#include "../TouchPanel/TouchPanel.h"
 #include "game_logic/gameL.h"
-#include <stdio.h> /*for sprintf*/
 
 extern game_state gs;
 extern random_init rand_init;
@@ -28,6 +24,7 @@ extern random_init rand_init;
 **
 ******************************************************************************/
 
+//TIM0 viene utilizzato per muovere Pac-Man all'interno della mappa
 void TIMER0_IRQHandler (void)
 {
 	if(gs.actDir != STOP)
@@ -52,7 +49,7 @@ void TIMER0_IRQHandler (void)
 **
 ******************************************************************************/
 
-
+//TIM1 viene utilizzado per il conteggio del COUNTDOWN, la generazione delle Power Pills e il GAME OVER
 void TIMER1_IRQHandler (void)
 {
 	gs.countDown = gs.countDown - 1;
@@ -74,9 +71,9 @@ void TIMER1_IRQHandler (void)
   return;
 }
 
+//TIM2 viene utilizzato come timer di supporto per il refresh grafico del valore di score, evitando di appesantire TIM0
 void TIMER2_IRQHandler (void)
 {
-	
 	if(gs.changeScoreUI == 1)
 	{
 			uint32_t actPoints = gs.score;

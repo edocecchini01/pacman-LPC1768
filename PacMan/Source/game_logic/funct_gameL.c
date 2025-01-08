@@ -128,12 +128,7 @@ void game_tim_init(uint32_t timer, uint32_t speed) //in milliseconds
 
 void game_init()
 {
-	GUI_Text(8, 7, (uint8_t *) "GAME OVER:", White, Black);
-	GUI_Text(96, 7, (uint8_t *) "60", White, Black);
-	GUI_Text(140, 7, (uint8_t *) "SCORE:", White, Black);
-	GUI_Text(196, 7, (uint8_t *) "00", White, Black);
-	draw_pacMan_live(8, 288, Yellow); //disegna la prima vita
-	
+	game_initUI();
 	game_tim_init(0,200);	//PACMAN SPEED MOVMENT SET TO 250ms
 	game_tim_init(1,1000); //START COUNTDOWN
 	game_tim_init(2,500); //START REFRESH SYSTEM

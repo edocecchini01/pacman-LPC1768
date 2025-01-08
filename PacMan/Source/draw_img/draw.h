@@ -15,6 +15,8 @@ void draw_scalPixel(uint16_t x0, uint16_t y0, uint16_t color);
 
 void draw_obj(uint16_t x0, uint16_t y0, uint16_t obj);
 
+void game_initUI();
+
 void draw_pacMan_live(uint16_t x0, uint16_t y0, uint16_t color);
 
 void refresh_timer(uint32_t time);

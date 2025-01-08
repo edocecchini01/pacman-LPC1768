@@ -4,19 +4,13 @@
 **
 **--------------File Info---------------------------------------------------------------------------------
 ** File name:               main.c
-** Descriptions:            The GLCD application function
+** Descriptions:            Pac-Man
 **
 **--------------------------------------------------------------------------------------------------------
-** Created by:              AVRman
-** Created date:            2010-11-7
+** Created by:              Edoardo Cecchini
+** Created date:            2024-2025
 ** Version:                 v1.0
-** Descriptions:            The original version
-**
-**--------------------------------------------------------------------------------------------------------
-** Modified by:             Paolo Bernardi
-** Modified date:           03/01/2020
-** Version:                 v2.0
-** Descriptions:            basic program for LCD and Touch Panel teaching
+** Descriptions:            Part 1
 **
 *********************************************************************************************************/
 
@@ -24,7 +18,6 @@
 #include "LPC17xx.h"
 #include "button_EXINT/button.h"
 #include "GLCD/GLCD.h" 
-#include "TouchPanel/TouchPanel.h"
 #include "timer/timer.h"
 #include "RIT/RIT.h"
 #include "draw_img/draw.h"
@@ -36,7 +29,7 @@
 extern uint8_t ScaleFlag; // <- ScaleFlag needs to visible in order for the emulator to find the symbol (can be placed also inside system_LPC17xx.h but since it is RO, it needs more work)
 #endif
 
-volatile const mapOff[2] = {8,32}; //offset x,y
+volatile const mapOff[2] = {8,32}; //offset x,y necessari per disegnare correttamente la mappa di gioco
 
 volatile game_state gs = {
 		.posPac_Row = 0,
@@ -65,17 +58,17 @@ int main(void)
 	init_RIT(0x004C4B40);								  /* RIT Initialization 50 msec       	*/
 	enable_RIT();
 	
-  LCD_Initialization();
+  LCD_Initialization();									
 	
 	LCD_Clear(Black);
 	
-	draw_backgoround(mapOff[0], mapOff[1]);
+	draw_backgoround(mapOff[0], mapOff[1]);			//visualizzazione su schermo della mappa di gioco
 	
-	game_init();
+	game_init();			//init dei Timer e della UI
 	
-	srand((LPC_RIT->RICOUNTER ^ LPC_TIM0->TC) & 0xFFFFFFFF);
+	srand((LPC_RIT->RICOUNTER ^ LPC_TIM0->TC) & 0xFFFFFFFF);		//set del seed per la randomizzazione delle Power Pills
 	
-	init_powerPills();
+	init_powerPills();			//generazione randomica delle coordinate e tempo di creazione delle Power Pills
 	
 	LPC_SC->PCON |= 0x1;									/* power-down	mode										*/
 	LPC_SC->PCON &= ~(0x2);						
