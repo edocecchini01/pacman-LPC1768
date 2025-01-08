@@ -1,7 +1,6 @@
 #include <stdint.h>
 #include <stdio.h>
 #include "GLCD/GLCD.h"
-//#include "game_logic/gameL.h"
 
 void LCD_DrawLineVertical(uint16_t x0, uint16_t y0, uint16_t y1, uint16_t color);
 

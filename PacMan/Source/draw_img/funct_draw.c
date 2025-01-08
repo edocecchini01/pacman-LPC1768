@@ -4,9 +4,6 @@
 #define ROWS 31
 #define COLUMNS 28
 
-//LCD_SetPoint(uint16_t Xpos,uint16_t Ypos,uint16_t point);
-//LCD_DrawLine( uint16_t x0, uint16_t y0, uint16_t x1, uint16_t y1 , uint16_t color );
-
 volatile const uint8_t loose_screen[ROWS][COLUMNS] = {
     {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
     {0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0},
@@ -78,6 +75,8 @@ volatile const uint8_t win_screen[31][28] = {
 extern mapOff[2];
 extern game_state gs;
 
+/*
+
 void draw_tail_1(uint16_t x0, uint16_t y0)
 {
 	LCD_DrawLine(x0+6, y0+3, x0+5, y0+3 ,Blue);
@@ -93,6 +92,8 @@ void draw_tail_2(uint16_t x0, uint16_t y0)
 
 	LCD_SetPoint(x0, y0, Green);
 }
+
+*/
 
 void draw_scalPixel(uint16_t x0, uint16_t y0, uint16_t color) //quadrato 8x8
 {
@@ -240,10 +241,9 @@ void draw_pacMan_live(uint16_t x0, uint16_t y0, uint16_t color)
 		LCD_DrawLineHorizontal(x0+4, y0+12, x0+9,color);
 }
 
-
 void refresh_timer(uint32_t time)
 {
-	if(time < 10)
+	if(time < 10)			//elimina il residuo del numero a 2 cifre
 	{
 		draw_scalPixel(104, 7, 0);
 		draw_scalPixel(104, 15, 0);
@@ -302,7 +302,7 @@ void draw_win_loose_screen(uint8_t win)
 	}
 }
 
-
+//funzione custom che disegna SOLO da sinistra verso destra
 void LCD_DrawLineHorizontal(uint16_t x0, uint16_t y0, uint16_t x1, uint16_t color)
 {
 	while(x0 <= x1){

@@ -16,7 +16,6 @@ void EINT0_IRQHandler (void)	  	/* INT0														 */
 	LPC_SC->EXTINT &= (1 << 0);     /* clear pending interrupt         */
 }
 
-
 void EINT1_IRQHandler (void)	  	/* KEY1														 */
 {
 	down_1 = 1;

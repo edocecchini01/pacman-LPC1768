@@ -1,12 +1,7 @@
 #include <stdint.h>
 #include "joystick/joystick.h"
 
-volatile typedef struct {
-    uint32_t powerPill_Row[6];
-		uint32_t powerPill_Col[6];
-		uint32_t powerPill_Tim;
-	} random_init;
-
+//struttura per la gestione dinamica dell'intero gioco
 volatile typedef struct {
     int posPac_Row;	//y
 		int posPac_Col;	//x
@@ -20,17 +15,20 @@ volatile typedef struct {
 		uint8_t changeScoreUI;
 } game_state;
 
-void draw_backgoround(uint32_t off_X, uint32_t off_Y);
-
-void count_down();
-
-void game_tim_init(uint32_t timer, uint32_t speed);
+//struttura per contenere i dati randomici delle Power Pills
+volatile typedef struct {
+    uint32_t powerPill_Row[6];
+		uint32_t powerPill_Col[6];
+		uint32_t powerPill_Tim;
+	} random_init;
 
 void game_init();
 
-void direct_pacMan(Direction direction);
+void draw_backgoround(uint32_t off_X, uint32_t off_Y);
 
 void move_pacMan(int movRow, int movCol);
+
+void direct_pacMan(Direction direction);
 
 void init_powerPills();
 

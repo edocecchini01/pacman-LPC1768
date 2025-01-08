@@ -2,58 +2,14 @@
 #include "draw_img/draw.h"
 #include "timer/timer.h"
 #include "RIT/RIT.h"
+#include "utils/utils.h"
 
 //NOTA: il display è ruotato
 
 #define ROWS 31
 #define COLUMNS 28
 
-volatile uint8_t obj_matrix[ROWS][COLUMNS] = {
-    {2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2},
-    {2, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 2, 2, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 2},
-    {2, 3, 2, 2, 2, 2, 3, 2, 2, 2, 2, 2, 3, 2, 2, 3, 2, 2, 2, 2, 2, 3, 2, 2, 2, 2, 3, 2},
-    {2, 3, 2, 2, 2, 2, 3, 2, 2, 2, 2, 2, 3, 2, 2, 3, 2, 2, 2, 2, 2, 3, 2, 2, 2, 2, 3, 2},
-    {2, 3, 2, 2, 2, 2, 3, 2, 2, 2, 2, 2, 3, 2, 2, 3, 2, 2, 2, 2, 2, 3, 2, 2, 2, 2, 3, 2},
-    {2, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 2},
-    {2, 3, 2, 2, 2, 2, 3, 2, 2, 3, 2, 2, 2, 2, 2, 2, 2, 2, 3, 2, 2, 3, 2, 2, 2, 2, 3, 2},
-    {2, 3, 2, 2, 2, 2, 3, 2, 2, 3, 2, 2, 2, 2, 2, 2, 2, 2, 3, 2, 2, 3, 2, 2, 2, 2, 3, 2},
-    {2, 3, 3, 3, 3, 3, 3, 2, 2, 3, 3, 3, 3, 2, 2, 3, 3, 3, 3, 2, 2, 3, 3, 3, 3, 3, 3, 2},
-    {2, 2, 2, 2, 2, 2, 3, 2, 2, 2, 2, 2, 0, 2, 2, 0, 2, 2, 2, 2, 2, 3, 2, 2, 2, 2, 2, 2},
-    {0, 0, 0, 0, 0, 2, 3, 2, 2, 2, 2, 2, 0, 2, 2, 0, 2, 2, 2, 2, 2, 3, 2, 0, 0, 0, 0, 0},
-    {0, 0, 0, 0, 0, 2, 3, 2, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 2, 3, 2, 0, 0, 0, 0, 0},
-    {0, 0, 0, 0, 0, 2, 3, 2, 2, 0, 2, 2, 2, 2, 2, 2, 2, 2, 0, 2, 2, 3, 2, 0, 0, 0, 0, 0},
-    {2, 2, 2, 2, 2, 2, 3, 2, 2, 0, 2, 0, 0, 0, 0, 0, 0, 2, 0, 2, 2, 3, 2, 2, 2, 2, 2, 2},
-    {0, 0, 0, 0, 0, 0, 3, 0, 0, 0, 2, 0, 0, 0, 0, 0, 0, 2, 0, 0, 0, 3, 0, 0, 0, 0, 0, 0},
-    {2, 2, 2, 2, 2, 2, 3, 2, 2, 0, 2, 0, 0, 0, 0, 0, 0, 2, 0, 2, 2, 3, 2, 2, 2, 2, 2, 2},
-    {0, 0, 0, 0, 0, 2, 3, 2, 2, 0, 2, 2, 2, 2, 2, 2, 2, 2, 0, 2, 2, 3, 2, 0, 0, 0, 0, 0},
-    {0, 0, 0, 0, 0, 2, 3, 2, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 2, 3, 2, 0, 0, 0, 0, 0},
-    {0, 0, 0, 0, 0, 2, 3, 2, 2, 0, 2, 2, 2, 2, 2, 2, 2, 2, 0, 2, 2, 3, 2, 0, 0, 0, 0, 0},
-    {2, 2, 2, 2, 2, 2, 3, 2, 2, 0, 2, 2, 2, 2, 2, 2, 2, 2, 0, 2, 2, 3, 2, 2, 2, 2, 2, 2},
-    {2, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 2, 2, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 2},
-    {2, 3, 2, 2, 2, 2, 3, 2, 2, 2, 2, 2, 3, 2, 2, 3, 2, 2, 2, 2, 2, 3, 2, 2, 2, 2, 3, 2},
-    {2, 3, 2, 2, 2, 2, 3, 2, 2, 2, 2, 2, 3, 2, 2, 3, 2, 2, 2, 2, 2, 3, 2, 2, 2, 2, 3, 2},
-    {2, 3, 3, 3, 2, 2, 3, 0, 0, 3, 3, 3, 3, 1, 0, 3, 3, 3, 3, 0, 0, 3, 2, 2, 3, 3, 3, 2},
-    {2, 2, 2, 3, 2, 2, 3, 0, 0, 3, 2, 2, 2, 2, 2, 2, 2, 2, 3, 0, 0, 3, 2, 2, 3, 2, 2, 2},
-    {2, 2, 2, 3, 2, 2, 3, 2, 2, 3, 2, 2, 2, 2, 2, 2, 2, 2, 3, 2, 2, 3, 2, 2, 3, 2, 2, 2},
-    {2, 3, 3, 3, 3, 3, 3, 2, 2, 3, 3, 3, 3, 2, 2, 3, 3, 3, 3, 2, 2, 3, 3, 3, 3, 3, 3, 2},
-    {2, 3, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 3, 2, 2, 3, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 3, 2},
-    {2, 3, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 3, 2, 2, 3, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 3, 2},
-    {2, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 2},
-    {2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2},
-};
-
-/*
-	OBJECT_CODES
-	
-	corridoio -> 0
-	pacman -> 1
-	muro -> 2
-	pallina -> 3
-	mega-pallina -> 4
-	??fantasmino
-*/
-
-
+//matrice statica utilizzata per disegnare il labirinto
 volatile const uint8_t back_matrix[ROWS][COLUMNS] = {
 	
 	  {1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1},
@@ -90,6 +46,51 @@ volatile const uint8_t back_matrix[ROWS][COLUMNS] = {
 			
 	};
 
+/* 
+	matrice dinamica sovrapposta alla matrice statica,
+	contiene gli oggetti utili alle logiche di gioco
+
+	OBJECT_CODES
+	corridoio -> 0
+	pacman -> 1
+	muro -> 2
+	pills -> 3
+	power-pills -> 4
+	
+*/
+volatile uint8_t obj_matrix[ROWS][COLUMNS] = {
+    {2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2},
+    {2, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 2, 2, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 2},
+    {2, 3, 2, 2, 2, 2, 3, 2, 2, 2, 2, 2, 3, 2, 2, 3, 2, 2, 2, 2, 2, 3, 2, 2, 2, 2, 3, 2},
+    {2, 3, 2, 2, 2, 2, 3, 2, 2, 2, 2, 2, 3, 2, 2, 3, 2, 2, 2, 2, 2, 3, 2, 2, 2, 2, 3, 2},
+    {2, 3, 2, 2, 2, 2, 3, 2, 2, 2, 2, 2, 3, 2, 2, 3, 2, 2, 2, 2, 2, 3, 2, 2, 2, 2, 3, 2},
+    {2, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 2},
+    {2, 3, 2, 2, 2, 2, 3, 2, 2, 3, 2, 2, 2, 2, 2, 2, 2, 2, 3, 2, 2, 3, 2, 2, 2, 2, 3, 2},
+    {2, 3, 2, 2, 2, 2, 3, 2, 2, 3, 2, 2, 2, 2, 2, 2, 2, 2, 3, 2, 2, 3, 2, 2, 2, 2, 3, 2},
+    {2, 3, 3, 3, 3, 3, 3, 2, 2, 3, 3, 3, 3, 2, 2, 3, 3, 3, 3, 2, 2, 3, 3, 3, 3, 3, 3, 2},
+    {2, 2, 2, 2, 2, 2, 3, 2, 2, 2, 2, 2, 0, 2, 2, 0, 2, 2, 2, 2, 2, 3, 2, 2, 2, 2, 2, 2},
+    {0, 0, 0, 0, 0, 2, 3, 2, 2, 2, 2, 2, 0, 2, 2, 0, 2, 2, 2, 2, 2, 3, 2, 0, 0, 0, 0, 0},
+    {0, 0, 0, 0, 0, 2, 3, 2, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 2, 3, 2, 0, 0, 0, 0, 0},
+    {0, 0, 0, 0, 0, 2, 3, 2, 2, 0, 2, 2, 2, 2, 2, 2, 2, 2, 0, 2, 2, 3, 2, 0, 0, 0, 0, 0},
+    {2, 2, 2, 2, 2, 2, 3, 2, 2, 0, 2, 0, 0, 0, 0, 0, 0, 2, 0, 2, 2, 3, 2, 2, 2, 2, 2, 2},
+    {0, 0, 0, 0, 0, 0, 3, 0, 0, 0, 2, 0, 0, 0, 0, 0, 0, 2, 0, 0, 0, 3, 0, 0, 0, 0, 0, 0},
+    {2, 2, 2, 2, 2, 2, 3, 2, 2, 0, 2, 0, 0, 0, 0, 0, 0, 2, 0, 2, 2, 3, 2, 2, 2, 2, 2, 2},
+    {0, 0, 0, 0, 0, 2, 3, 2, 2, 0, 2, 2, 2, 2, 2, 2, 2, 2, 0, 2, 2, 3, 2, 0, 0, 0, 0, 0},
+    {0, 0, 0, 0, 0, 2, 3, 2, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 2, 3, 2, 0, 0, 0, 0, 0},
+    {0, 0, 0, 0, 0, 2, 3, 2, 2, 0, 2, 2, 2, 2, 2, 2, 2, 2, 0, 2, 2, 3, 2, 0, 0, 0, 0, 0},
+    {2, 2, 2, 2, 2, 2, 3, 2, 2, 0, 2, 2, 2, 2, 2, 2, 2, 2, 0, 2, 2, 3, 2, 2, 2, 2, 2, 2},
+    {2, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 2, 2, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 2},
+    {2, 3, 2, 2, 2, 2, 3, 2, 2, 2, 2, 2, 3, 2, 2, 3, 2, 2, 2, 2, 2, 3, 2, 2, 2, 2, 3, 2},
+    {2, 3, 2, 2, 2, 2, 3, 2, 2, 2, 2, 2, 3, 2, 2, 3, 2, 2, 2, 2, 2, 3, 2, 2, 2, 2, 3, 2},
+    {2, 3, 3, 3, 2, 2, 3, 0, 0, 3, 3, 3, 3, 1, 0, 3, 3, 3, 3, 0, 0, 3, 2, 2, 3, 3, 3, 2},
+    {2, 2, 2, 3, 2, 2, 3, 0, 0, 3, 2, 2, 2, 2, 2, 2, 2, 2, 3, 0, 0, 3, 2, 2, 3, 2, 2, 2},
+    {2, 2, 2, 3, 2, 2, 3, 2, 2, 3, 2, 2, 2, 2, 2, 2, 2, 2, 3, 2, 2, 3, 2, 2, 3, 2, 2, 2},
+    {2, 3, 3, 3, 3, 3, 3, 2, 2, 3, 3, 3, 3, 2, 2, 3, 3, 3, 3, 2, 2, 3, 3, 3, 3, 3, 3, 2},
+    {2, 3, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 3, 2, 2, 3, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 3, 2},
+    {2, 3, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 3, 2, 2, 3, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 3, 2},
+    {2, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 2},
+    {2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2},
+};
 
 extern game_state gs;
 extern mapOff[];
@@ -100,40 +101,19 @@ extern random_init rand_init;
 	
 	TIM0 -> PACMAN
 	TIM1 -> COUNTDOWN
-	TIM2 -> REFRESH SCREEN
+	TIM2 -> REFRESH SCORE
 */
 
-void game_tim_init(uint32_t timer, uint32_t speed) //in milliseconds
-{
-	uint32_t count = speed * 25000;
-	
-	switch (timer){
-		case 0:
-			init_timer(timer, 0, count);
-			enable_timer(timer);
-			break;
-		case 1:
-			init_timer(timer, 0, count);
-			enable_timer(timer);
-			break;
-		case 2:
-			init_timer(timer, 0, count);
-			enable_timer(timer);
-			break;
-		default:
-			init_timer(0, 0, count);
-			enable_timer(0);
-	}
-}
-
+//inizializzazione dell'interfaccia grafica (time,score,lives) e di tutti i Timer
 void game_init()
 {
 	game_initUI();
-	game_tim_init(0,200);	//PACMAN SPEED MOVMENT SET TO 250ms
+	game_tim_init(0,200);	//PACMAN SPEED MOVMENT SET TO 200ms
 	game_tim_init(1,1000); //START COUNTDOWN
-	game_tim_init(2,500); //START REFRESH SYSTEM
+	game_tim_init(2,500); //START REFRESH SCORE SYSTEM
 }
 
+//funzione che disegna la mappa a partire dai valori della matrice back_matrix
 void draw_backgoround(uint32_t off_X, uint32_t off_Y)
 {
 	int i = 0, j = 0;
@@ -171,6 +151,7 @@ void draw_backgoround(uint32_t off_X, uint32_t off_Y)
 	
 }
 
+//funzione core che gestisce l'intero movimento di pacman all'interno della matrice dinamica obj_matrix
 void move_pacMan(int movRow, int movCol)
 {
 	gs.changeScoreUI = 0;
@@ -188,7 +169,7 @@ void move_pacMan(int movRow, int movCol)
 		newPosCol = 27;
 	}
 	
-	if(obj_matrix[newPosRow][newPosCol] == 2)  // la nuova posizione è un muro
+	if(obj_matrix[newPosRow][newPosCol] == 2)  //la nuova posizione è un muro
   {
 		gs.actDir = STOP;
 		return;
@@ -206,16 +187,16 @@ void move_pacMan(int movRow, int movCol)
 			gs.changeScoreUI = 1;
 		}
 		
-		draw_obj((gs.posPac_Col * 8)+ mapOff[0], (gs.posPac_Row * 8)+ mapOff[1], 0);  // Cancella nella vecchia posizione
+		draw_obj((gs.posPac_Col * 8)+ mapOff[0], (gs.posPac_Row * 8)+ mapOff[1], 0);  //cancella nella vecchia posizione
     obj_matrix[gs.posPac_Row][gs.posPac_Col] = 0;	//setta 0 nella posizione attuale della matrice degli oggetti
 		
-		if(movCol == 0)  // Movimento lungo le righe (Y)
+		if(movCol == 0)  //movimento lungo le righe (Y)
     {
-			draw_obj((gs.posPac_Col * 8) + mapOff[0], (newPosRow * 8) + mapOff[1], 1);  // Crea pacman nella nuova posizione
+			draw_obj((gs.posPac_Col * 8) + mapOff[0], (newPosRow * 8) + mapOff[1], 1);  //crea pacman nella nuova posizione
     }
-    else  // Movimento lungo le colonne (X)
+    else  //movimento lungo le colonne (X)
     {
-			draw_obj((newPosCol * 8) + mapOff[0], (gs.posPac_Row * 8) + mapOff[1], 1);  // Crea pacman nella nuova posizione
+			draw_obj((newPosCol * 8) + mapOff[0], (gs.posPac_Row * 8) + mapOff[1], 1);  //crea pacman nella nuova posizione
     }
 		
 		gs.posPac_Row = newPosRow;
@@ -226,6 +207,7 @@ void move_pacMan(int movRow, int movCol)
 	
 }
 
+//funzione che interpreta la direzione attuale e passa la nuova posizione di Pac Man a move_pacMan
 void direct_pacMan(Direction direction)
 {
 	switch(direction){
@@ -246,6 +228,7 @@ void direct_pacMan(Direction direction)
 	}
 }
 
+//inizializzazione dei valori randomici per le Power Pills (sia coordinate che tempo)
 void init_powerPills()
 {
 	multiple_random_gen(6, 1, COLUMNS-2, rand_init.powerPill_Col);
@@ -253,6 +236,7 @@ void init_powerPills()
 	rand_init.powerPill_Tim = single_randonm_gen(1,15);
 }
 
+//funzione che genera le Power Pills dinamicamente nella obj_matrix
 void gen_powerPills()
 {
 	int i = 0;
@@ -263,32 +247,33 @@ void gen_powerPills()
 		actRow = rand_init.powerPill_Row[i];
 		actCol = rand_init.powerPill_Col[i];
 		while (obj_matrix[actRow][actCol] != 3) {
-			actRow++;
+			actRow++;								//fino a che l'oggetto da sostituire non è una pills avanza nelle righe
 			if(actRow == ROWS-2)
 			{
 				if(actCol < COLUMNS-2)
 				{
-					actRow = 1;
+					actRow = 1;					//terminata la riga, ma non le colonne, avanza nelle colonne e rinizializza il val delle righe 
 					actCol++;
-				}else{
+				}else{								//terminate le colonne rinizializza sia il valore della colonna che della riga
 					actRow = 1;
 					actCol = 1;
 				}
 			}
 		}
-		obj_matrix[actRow][actCol] = 4;
-		draw_obj((actCol * 8)+ mapOff[0], (actRow * 8)+ mapOff[1], 4);
+		obj_matrix[actRow][actCol] = 4;			//trasforma la pills in una Power Pills
+		draw_obj((actCol * 8)+ mapOff[0], (actRow * 8)+ mapOff[1], 4);			//disegna la Power Pills
 	}
-	gs.isPowerGen = 1;
+	gs.isPowerGen = 1;			//necessario per generare le Power Pills solo una volta
 }
 
+//funzione che incrementa lo score del giocatore a seconda della Pills mangiata da Pac Man
 void add_score(uint32_t points)
 {
 	gs.score += points;
-	if(gs.score >= gs.next_life_threshold)
+	if(gs.score >= gs.next_life_threshold)		//ogni 1000 punti viene aggiunta una vita
 	{
 		gs.lives += 1;
-		gs.next_life_threshold += 1000;
+		gs.next_life_threshold += 1000;					//aggiorna la prossima soglia per ottenere una vita
 		
 		uint32_t actLives = gs.lives;
 		refresh_lives(actLives);
@@ -296,10 +281,11 @@ void add_score(uint32_t points)
 	
 	if(gs.score >= 2640)
 	{
-		end_game(1);
+		end_game(1);				//condizione di vittoria
 	}
 }
 
+//funzione che a seconda dello stato precedente attiva o disattiva la pausa
 void pause_resume_game(uint8_t state)
 {
 	//THE GAME IS ACTIVE
@@ -326,6 +312,7 @@ void pause_resume_game(uint8_t state)
   }
 }
 
+//funzione che gestisce la fine del gioco, sia vittoria che sconfitta
 void end_game(uint8_t win)
 {
 		NVIC_DisableIRQ(EINT0_IRQn);

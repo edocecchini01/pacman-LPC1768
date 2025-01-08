@@ -37,8 +37,9 @@ static int joystic_left=0;
 static int joystic_right=0;
 static int joystic_sel=0;
 	
-// BUTTON AREA
+/* BUTTON AREA */
 
+//la pressione di INT0 permette di entrare o uscire dallo stato di pausa
 /*************************INT0***************************/
 if(down_0 !=0){   //verifica se una delle down è != 0, implica che è stata scatenata un'interruzione dal relativo pulsante
 	down_0++;
@@ -55,7 +56,6 @@ if(down_0 !=0){   //verifica se una delle down è != 0, implica che è stata scate
 					gs.isPause = 0;
 					pause_resume_game(1);
 				}
-			
 				break;
 			default:
 				break;
@@ -107,8 +107,10 @@ if(down_2 !=0){
 	}
 } // end KEY2
 
-// JOYSTICK AREA	
-	
+
+/* JOYSTICK AREA */
+
+//le seguenti condizioni consentono a Pac-Man di muoversi lungo la direzione indicata dal JOYSTICK
 /*************************JOY_UP***************************/
 	if((LPC_GPIO1->FIOPIN & (1<<29)) == 0){	
 		/* Joytick UP pressed */
