@@ -108,9 +108,9 @@ extern random_init rand_init;
 void game_init()
 {
 	game_initUI();
-	game_tim_init(0,200);	//PACMAN SPEED MOVMENT SET TO 200ms
+	game_tim_init(0,150);	//PACMAN SPEED MOVMENT SET TO 150ms
 	game_tim_init(1,1000); //START COUNTDOWN
-	game_tim_init(2,500); //START REFRESH SCORE SYSTEM
+	game_tim_init(2,300); //START REFRESH SCORE SYSTEM
 }
 
 //funzione che disegna la mappa a partire dai valori della matrice back_matrix
