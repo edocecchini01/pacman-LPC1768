@@ -39,7 +39,7 @@ volatile game_state gs = {
 		.lives = 1,
 		.next_life_threshold = 1000,
 		.actDir = STOP,
-		.isPause = 0,
+		.isPause = 1,
 		.isPowerGen = 0,
 		.changeScoreUI = 0
 };
@@ -69,6 +69,8 @@ int main(void)
 	srand((LPC_RIT->RICOUNTER ^ LPC_TIM0->TC) & 0xFFFFFFFF);		//set del seed per la randomizzazione delle Power Pills
 	
 	init_powerPills();			//generazione randomica delle coordinate e tempo di creazione delle Power Pills
+	
+	pause_resume_game(0);		//inizio in pausa
 	
 	LPC_SC->PCON |= 0x1;									/* power-down	mode										*/
 	LPC_SC->PCON &= ~(0x2);						
