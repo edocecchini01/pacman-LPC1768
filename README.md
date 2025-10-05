@@ -48,7 +48,9 @@ Source/
 ## 🎮 Gameplay Overview
 
 ### Game Demo (emulated)
-![PacMan Gameplay](Gameplay_img/game.gif)
+<div align="center">
+  <img src="Gameplay_img/game.gif" alt="PacMan Gameplay" width="600">
+</div>
 
 ### Some game screens
 <div align="center">
