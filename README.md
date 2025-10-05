@@ -49,13 +49,13 @@ Source/
 
 ### Game Demo (emulated)
 <div align="center">
-  <img src="Gameplay_img/game.gif" alt="PacMan Gameplay" width="600">
+  <img src="Assets/game.gif" alt="PacMan Gameplay" width="600">
 </div>
 
 ### Some game screens
 <div align="center">
-  <img src="Gameplay_img/win_screen.png" alt="Win Screen" width="300">
-  <img src="Gameplay_img/loose_screen.png" alt="Game Over Screen" width="300">
+  <img src="Assets/win_screen.png" alt="Win Screen" width="300">
+  <img src="Assets/loose_screen.png" alt="Game Over Screen" width="300">
 </div>
 
 *Win screen (left) and Game Over screen (right)*
