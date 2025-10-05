@@ -46,3 +46,14 @@ Source/
 - **Power**: Sleep modes when idle
 
 ## 🎮 Gameplay Overview
+
+### Game Demo (emulated)
+![PacMan Gameplay](Gameplay_img/game.gif)
+
+### Some game screens
+<div align="center">
+  <img src="Gameplay_img/win_screen.png" alt="Win Screen" width="300">
+  <img src="Gameplay_img/loose_screen.png" alt="Game Over Screen" width="300">
+</div>
+
+*Win screen (left) and Game Over screen (right)*
